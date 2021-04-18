@@ -1,4 +1,3 @@
-using System;
 using Physics;
 using UnityEngine;
 
@@ -62,7 +61,7 @@ namespace Input
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(_rb.velocity.y) < 0.001f)
             {
                 _rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
@@ -80,7 +79,8 @@ namespace Input
         {
             // Get raw input for applying own dead zones
             float inputX = UnityEngine.Input.GetAxisRaw("Horizontal");
-            float inputY = UnityEngine.Input.GetAxisRaw("Vertical");
+            //float inputY = UnityEngine.Input.GetAxisRaw("Vertical");
+            float inputY = 0.0f;
             // Apply custom dead zones
             Vector2 input = DeadZones.Apply(new Vector2(inputX, inputY), innerDeadZone, outerDeadZone);
             // Apply to rigidbody
@@ -112,7 +112,7 @@ namespace Input
 
             _rb.velocity = velocity;
             _velocityChange = Vector2.zero;
-            
+
             terminalVelocityX = HasReachedTerminalVelocityX;
             terminalVelocityY = HasReachedTerminalVelocityY;
 

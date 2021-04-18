@@ -199,11 +199,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 756827286}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &756827284
@@ -287,9 +287,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 9.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 519420032}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &756827287
 Rigidbody2D:
@@ -310,7 +311,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &756827288
 MonoBehaviour:
@@ -325,13 +326,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useForceBasedMovement: 1
-  forceMagnitude: 200
+  forceMagnitude: 50
   velocityMagnitude: 20
-  jumpForce: 10
-  gravity: {x: 0, y: -9.81}
-  useQuickDrag: 1
+  jumpForce: 15
+  gravity: {x: 0, y: -20}
+  useQuickDrag: 0
   quickDrag: 0.05
-  drag: {x: 20, y: 0}
+  drag: {x: 5, y: 2}
   terminalVelocityX: 0
   terminalVelocityY: 0
   innerDeadZone: 0.1
@@ -470,7 +471,7 @@ Transform:
   m_LocalScale: {x: 18.11595, y: 62.45065, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1122360258
 MonoBehaviour:
@@ -593,5 +594,5 @@ Transform:
   m_LocalScale: {x: 10, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
