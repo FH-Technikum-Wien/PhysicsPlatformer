@@ -1,3 +1,4 @@
+using System;
 using Physics;
 using UnityEngine;
 
@@ -21,10 +22,13 @@ namespace Input
         [Header("Jumping")] [SerializeField] [Tooltip("The force with which the player jumps")]
         private float jumpForce = 10.0f;
 
+        [SerializeField] [Range(0, 90)] [Tooltip("The angle which determines what counts as ground for jumping")]
+        private float isGroundAngle = 10.0f;
+
         [Header("Gravity")] [SerializeField] [Tooltip("The amount of gravity applied to the player")]
         private Vector2 gravity = new Vector2(0.0f, -9.81f);
 
-        [Header(("Drag"))] [SerializeField] [Tooltip("Use quickDrag instead of correct drag [0-1]")]
+        [Header("Drag")] [SerializeField] [Tooltip("Use quickDrag instead of correct drag [0-1]")]
         private bool useQuickDrag;
 
         [SerializeField] [Tooltip("QuickDrag amount. Higher than 1 reverts, lower than 0 accelerates")] [Range(-1f, 2f)]
@@ -51,6 +55,7 @@ namespace Input
         private float _oldQuickDrag;
 
         private Vector2 _prevVelocity;
+        private bool _isGrounded;
 
         private void Awake()
         {
@@ -61,8 +66,9 @@ namespace Input
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(_rb.velocity.y) < 0.001f)
+            if (_isGrounded && (UnityEngine.Input.GetKeyDown(KeyCode.Space) || UnityEngine.Input.GetKeyDown(KeyCode.W)))
             {
+                _isGrounded = false;
                 _rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
         }
@@ -75,14 +81,40 @@ namespace Input
             ApplyVelocityChange();
         }
 
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (!other.TryGetComponent(out DragChanger dragChanger))
+                return;
+            _oldDrag = drag;
+            _oldQuickDrag = quickDrag;
+            // Get drag from current material/liquid/air/...
+            drag = dragChanger.drag;
+            quickDrag = dragChanger.quickDrag;
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (!other.TryGetComponent(out DragChanger dragChanger))
+                return;
+            // Revert drag
+            drag = _oldDrag;
+            quickDrag = _oldQuickDrag;
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (Math.Acos(other.contacts[0].normal.y) < Mathf.Deg2Rad * isGroundAngle)
+                _isGrounded = true;
+        }
+
         private void AddInput()
         {
             // Get raw input for applying own dead zones
             float inputX = UnityEngine.Input.GetAxisRaw("Horizontal");
-            //float inputY = UnityEngine.Input.GetAxisRaw("Vertical");
-            float inputY = 0.0f;
+
             // Apply custom dead zones
-            Vector2 input = DeadZones.Apply(new Vector2(inputX, inputY), innerDeadZone, outerDeadZone);
+            Vector2 input = DeadZones.Apply(new Vector2(inputX, 0), innerDeadZone, outerDeadZone);
+
             // Apply to rigidbody
             if (useForceBasedMovement)
                 _rb.AddForce(input * forceMagnitude);
@@ -106,8 +138,10 @@ namespace Input
             }
             else
             {
-                velocity += new Vector2(-drag.x * velocity.x + _velocityChange.x,
-                    -drag.y * velocity.y + _velocityChange.y) * Time.fixedDeltaTime;
+                // TODO: Why is y different to x?
+                velocity += new Vector2(
+                    -drag.x * velocity.x + _velocityChange.x,
+                    -drag.y / Time.fixedDeltaTime * velocity.y + _velocityChange.y) * Time.fixedDeltaTime;
             }
 
             _rb.velocity = velocity;
@@ -117,26 +151,6 @@ namespace Input
             terminalVelocityY = HasReachedTerminalVelocityY;
 
             _prevVelocity = velocity;
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (!other.TryGetComponent(out DragChanger dragChanger))
-                return;
-            _oldDrag = drag;
-            _oldQuickDrag = quickDrag;
-            // Get drag from current material/liquid/air/...
-            drag = dragChanger.drag;
-            quickDrag = dragChanger.quickDrag;
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (!other.TryGetComponent(out DragChanger dragChanger))
-                return;
-            // Revert drag
-            drag = _oldDrag;
-            quickDrag = _oldQuickDrag;
         }
 
         private bool HasReachedTerminalVelocityX => Mathf.Approximately(_prevVelocity.x, _rb.velocity.x);
