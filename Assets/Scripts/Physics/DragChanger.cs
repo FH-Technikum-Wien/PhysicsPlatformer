@@ -2,9 +2,18 @@ using UnityEngine;
 
 namespace Physics
 {
+    [RequireComponent(typeof(Collider2D))]
     public class DragChanger : MonoBehaviour
     {
-        public Vector2 drag = new Vector2(5.0f, 5.0f);
+        [SerializeField] private MaterialDensity.MaterialType materialType;
+
         public float quickDrag = 0.8f;
+
+        public float materialDensity;
+
+        private void Awake()
+        {
+            materialDensity = MaterialDensity.GetMaterialDensity(materialType);
+        }
     }
 }

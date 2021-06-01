@@ -435,6 +435,7 @@ GameObject:
   - component: {fileID: 756827286}
   - component: {fileID: 756827285}
   - component: {fileID: 756827288}
+  - component: {fileID: 756827290}
   - component: {fileID: 756827287}
   - component: {fileID: 756827289}
   m_Layer: 0
@@ -503,7 +504,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 756827284}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9.3, z: 0}
+  m_LocalPosition: {x: 5.66, y: 9.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 519420032}
@@ -547,13 +548,10 @@ MonoBehaviour:
   forceMagnitude: 50
   velocityMagnitude: 20
   jumpForce: 15
-  isGroundAngle: 31
-  gravity: {x: 0, y: -20}
-  useQuickDrag: 0
+  groundAngle: 30
+  isGrounded: 0
   quickDrag: 0.05
-  drag: {x: 5, y: 0.05}
-  terminalVelocityX: 0
-  terminalVelocityY: 0
+  drag: {x: 5, y: 1}
   innerDeadZone: 0.1
   outerDeadZone: 0.9
 --- !u!61 &756827289
@@ -582,6 +580,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &756827290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756827284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c17dcb4eb466e1544b40a83e8fbb8cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 1
+  gravityScale: 1
+  useQuickDrag: 0
+  quickDrag: 0.05
+  dragCoefficient: 1
+  materialDensity: 1.225
+  frontalArea: 1
+  showDebugValues: 1
+  currentVelocity: {x: 0, y: 0}
+  terminalVelocityXReached: 0
+  terminalVelocityYReached: 0
 --- !u!1 &902437196
 GameObject:
   m_ObjectHideFlags: 0
@@ -922,8 +943,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33fefdc451130bd41a3ce791fa7cba9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drag: {x: 20, y: 20}
+  materialType: 2
   quickDrag: 0.6
+  materialDensity: 0
 --- !u!1 &1394277036
 GameObject:
   m_ObjectHideFlags: 0
