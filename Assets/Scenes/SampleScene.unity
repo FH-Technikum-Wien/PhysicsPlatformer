@@ -504,7 +504,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 756827284}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.66, y: 9.3, z: 0}
+  m_LocalPosition: {x: -2.5, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 519420032}
@@ -547,13 +547,11 @@ MonoBehaviour:
   useForceBasedMovement: 1
   forceMagnitude: 50
   velocityMagnitude: 20
-  jumpForce: 15
+  jumpForce: 500
   groundAngle: 30
-  isGrounded: 0
-  quickDrag: 0.05
-  drag: {x: 5, y: 1}
   innerDeadZone: 0.1
   outerDeadZone: 0.9
+  isGrounded: 0
 --- !u!61 &756827289
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -593,12 +591,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 1
-  gravityScale: 1
-  useQuickDrag: 0
-  quickDrag: 0.05
+  gravityScale: 2
   dragCoefficient: 1
   materialDensity: 1.225
   frontalArea: 1
+  useQuickDrag: 0
+  quickDrag: 0.0215
   showDebugValues: 1
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
@@ -943,8 +941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33fefdc451130bd41a3ce791fa7cba9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quickDrag: 0.434
   materialType: 2
-  quickDrag: 0.6
   materialDensity: 0
 --- !u!1 &1394277036
 GameObject:

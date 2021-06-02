@@ -1,4 +1,5 @@
 using System;
+using Physics;
 using UnityEngine;
 
 namespace Input
@@ -24,14 +25,6 @@ namespace Input
         [SerializeField] [Range(0, 90)] [Tooltip("The angle which determines what counts as ground for jumping")]
         private float groundAngle = 30.0f;
 
-        [SerializeField] [Tooltip("Whether the player is currently grounded")]
-        private bool isGrounded;
-
-        [SerializeField] [Tooltip("QuickDrag amount. Higher than 1 reverts, lower than 0 accelerates")] [Range(-1f, 2f)]
-        private float quickDrag = 0.05f;
-
-        [SerializeField] [Tooltip("The amount of drag that the player has")]
-        private Vector2 drag = new Vector2(5, 1);
 
         [Header("Controller")] [SerializeField] [Tooltip("Inner dead zone of the controller")]
         private float innerDeadZone = 0.1f;
@@ -39,26 +32,23 @@ namespace Input
         [SerializeField] [Tooltip("Outer dead zone of the controller")]
         private float outerDeadZone = 0.9f;
 
-        private Rigidbody2D _rb;
-        private Vector2 _velocityChange;
-        private Vector2 _oldDrag;
-        private float _oldQuickDrag;
+        [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
+        private bool isGrounded;
 
-        private bool _isGrounded;
+        private PhysicsBody2D _pb;
+        private Vector2 _velocityChange;
 
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody2D>();
-            _oldDrag = drag;
-            _oldQuickDrag = quickDrag;
+            _pb = GetComponent<PhysicsBody2D>();
         }
 
         private void Update()
         {
-            if (_isGrounded && (UnityEngine.Input.GetKeyDown(KeyCode.Space) || UnityEngine.Input.GetKeyDown(KeyCode.W)))
+            if (isGrounded && (UnityEngine.Input.GetKeyDown(KeyCode.Space) || UnityEngine.Input.GetKeyDown(KeyCode.W)))
             {
-                _isGrounded = false;
-                _rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                isGrounded = false;
+                _pb.ApplyForce(new Vector2(0, jumpForce));
             }
         }
 
@@ -71,7 +61,7 @@ namespace Input
         {
             // Collision Normals to determine if player is grounded
             if (Math.Acos(other.contacts[0].normal.y) < Mathf.Deg2Rad * groundAngle)
-                _isGrounded = true;
+                isGrounded = true;
         }
 
         private void AddInput()
@@ -84,9 +74,9 @@ namespace Input
 
             // Apply to rigidbody
             if (useForceBasedMovement)
-                _rb.AddForce(input * forceMagnitude);
+                _pb.ApplyForce(input * forceMagnitude);
             else
-                _rb.velocity = input * velocityMagnitude;
+                _pb.SetVelocity(input * velocityMagnitude);
         }
     }
 }
