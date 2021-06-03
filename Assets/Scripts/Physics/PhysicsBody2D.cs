@@ -33,6 +33,11 @@ namespace Physics
         [SerializeField] [Tooltip("QuickDrag amount. Higher than 1 reverts, lower than 0 accelerates")] [Range(-1f, 2f)]
         private float quickDrag = 0.05f;
 
+        [Header("Bounciness")]
+        [SerializeField]
+        [Tooltip("The bounciness of the physics body. < 0 -> 'Phasing' | 0-1 -> Bounce | > 1 -> Explosion")]
+        private float bounciness = 1.0f;
+
         [Header("Debugging")] [SerializeField] public bool showDebugValues = false;
 
         [HideInInspector] [Tooltip("The current velocity")]
@@ -48,6 +53,9 @@ namespace Physics
         /// The gravity applied to all <see cref="PhysicsBody2D"/>s.
         /// </summary>
         public static Vector2 GlobalGravity = new Vector2(0.0f, 9.81f);
+
+        public float Mass => mass;
+        public Vector2 Velocity => _rb.velocity;
 
         private Rigidbody2D _rb;
         private Vector2 _previousVelocity;
@@ -74,7 +82,6 @@ namespace Physics
             currentVelocity = _rb.velocity;
             terminalVelocityXReached = Mathf.Approximately(Mathf.Abs(_previousVelocity.x), Mathf.Abs(_rb.velocity.x));
             terminalVelocityYReached = Mathf.Approximately(Mathf.Abs(_previousVelocity.y), Mathf.Abs(_rb.velocity.y));
-            _previousVelocity = _rb.velocity;
 
             if (useQuickDrag)
             {
@@ -86,10 +93,34 @@ namespace Physics
                 ApplyDrag();
                 ApplyGravity();
             }
+
+            _previousVelocity = _rb.velocity;
+        }
+
+        /// <summary>
+        /// Coefficient of restitution (bounciness)
+        /// </summary>
+        /// <param name="other"></param>
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            Vector2 velocity = _previousVelocity;
+            if (other.collider.TryGetComponent(out PhysicsBody2D body))
+            {
+                velocity = (mass * velocity + body.Mass * body.Velocity +
+                            body.Mass * bounciness * (body.Velocity - velocity)) / (mass + body.Mass);
+            }
+            else
+            {
+                // Simplified version for collisions with non-rigidbodies
+                velocity = bounciness * -velocity / mass;
+            }
+
+            _rb.velocity = velocity;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            // Change drag
             if (!other.TryGetComponent(out DragChanger dragChanger))
                 return;
             _oldQuickDrag = quickDrag;
@@ -99,6 +130,7 @@ namespace Physics
 
         private void OnTriggerExit2D(Collider2D other)
         {
+            // Revert drag
             if (!other.TryGetComponent(out DragChanger dragChanger))
                 return;
             // Revert drag
@@ -126,6 +158,7 @@ namespace Physics
         /// <para>
         /// This function also includes moving with other objects, by lerping to <see cref="_baseVelocity"/>.
         /// </para>
+        /// For checking: https://www.calctool.org/CALC/eng/aerospace/terminal
         /// </summary>
         private void ApplyDrag()
         {

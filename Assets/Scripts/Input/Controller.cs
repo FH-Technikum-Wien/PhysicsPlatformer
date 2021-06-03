@@ -70,13 +70,43 @@ namespace Input
             float inputX = UnityEngine.Input.GetAxisRaw("Horizontal");
 
             // Apply custom dead zones
-            Vector2 input = DeadZones.Apply(new Vector2(inputX, 0), innerDeadZone, outerDeadZone);
+            Vector2 input = ApplyDeadZones(new Vector2(inputX, 0), innerDeadZone, outerDeadZone);
 
             // Apply to rigidbody
             if (useForceBasedMovement)
                 _pb.ApplyForce(input * forceMagnitude);
             else
                 _pb.SetVelocity(input * velocityMagnitude);
+        }
+
+        /// <summary>
+        /// Applies dead zones on an input-vector. Uses <see cref="Apply(float,float,float)"/> on each axis.
+        /// Also normalizes the input, if necessary.
+        /// </summary>
+        /// <param name="input">Input as a vector</param>
+        /// <param name="inner">Defines the inner dead zone</param>
+        /// <param name="outer">Defines the outer dead zone</param>
+        private static Vector2 ApplyDeadZones(Vector2 input, float inner, float outer)
+        {
+            // Apply dead zones per axis
+            Vector2 result = new Vector2(ApplyDeadZones(input.x, inner, outer),
+                ApplyDeadZones(input.y, inner, outer));
+            // Normalize it
+            return result.magnitude > 1f ? result.normalized : result;
+        }
+
+        /// <summary>
+        /// Applies dead zones on one axis.
+        /// </summary>
+        /// <param name="value">The axis value</param>
+        /// <param name="inner">Defines the inner dead zone</param>
+        /// <param name="outer">Defines the outer dead zone</param>
+        private static float ApplyDeadZones(float value, float inner, float outer)
+        {
+            // Use absolute for calculation, then map back to actual sign
+            float abs = Mathf.Abs(value);
+            // Returns t [0,1] which defines the interpolating value for c, between a and b
+            return Mathf.InverseLerp(inner, outer, abs) * Mathf.Sign(value);
         }
     }
 }
