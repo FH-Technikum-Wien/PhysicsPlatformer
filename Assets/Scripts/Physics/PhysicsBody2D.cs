@@ -49,13 +49,17 @@ namespace Physics
         [HideInInspector] [Tooltip("Whether we reached terminal velocity on Y")]
         public bool terminalVelocityYReached;
 
+        [HideInInspector] [Tooltip("")] public bool addVelocityToBody;
+
+        [HideInInspector] [Tooltip("")] public Vector2 velocityToAdd;
+
         /// <summary>
         /// The gravity applied to all <see cref="PhysicsBody2D"/>s.
         /// </summary>
         public static Vector2 GlobalGravity = new Vector2(0.0f, 9.81f);
 
         public float Mass => mass;
-        public Vector2 Velocity => _rb.velocity;
+        public Vector2 Velocity => _previousVelocity;
 
         private Rigidbody2D _rb;
         private Vector2 _previousVelocity;
@@ -79,6 +83,12 @@ namespace Physics
         private void FixedUpdate()
         {
             // Debug values
+            if (addVelocityToBody)
+            {
+                addVelocityToBody = false;
+                _rb.velocity = velocityToAdd;
+            }
+
             currentVelocity = _rb.velocity;
             terminalVelocityXReached = Mathf.Approximately(Mathf.Abs(_previousVelocity.x), Mathf.Abs(_rb.velocity.x));
             terminalVelocityYReached = Mathf.Approximately(Mathf.Abs(_previousVelocity.y), Mathf.Abs(_rb.velocity.y));

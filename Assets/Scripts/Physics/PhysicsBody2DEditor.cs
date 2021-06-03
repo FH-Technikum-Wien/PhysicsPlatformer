@@ -18,6 +18,8 @@ namespace Physics
                 EditorGUILayout.Toggle("Terminal Velocity X Reached", script.terminalVelocityXReached);
             script.terminalVelocityYReached =
                 EditorGUILayout.Toggle("Terminal Velocity Y Reached", script.terminalVelocityYReached);
+            script.addVelocityToBody = EditorGUILayout.Toggle("Add Velocity To Body", script.addVelocityToBody);
+            script.velocityToAdd = EditorGUILayout.Vector2Field("Velocity To Add", script.velocityToAdd);
         }
     }
 }
