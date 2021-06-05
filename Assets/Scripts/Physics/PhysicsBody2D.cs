@@ -59,10 +59,11 @@ namespace Physics
         public static Vector2 GlobalGravity = new Vector2(0.0f, 9.81f);
 
         public float Mass => mass;
-        public Vector2 Velocity => _previousVelocity;
+        public Vector2 Velocity => _rb.velocity;
+        public Vector2 CachedVelocity => _cachedVelocity;
 
         private Rigidbody2D _rb;
-        private Vector2 _previousVelocity;
+        private Vector2 _cachedVelocity;
         private float _oldQuickDrag;
 
         private Vector2 _baseVelocity = Vector2.zero;
@@ -73,7 +74,10 @@ namespace Physics
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
-            // Disable all functionality by resetting values
+            // Disable all default collision functionality for the rigidbody 
+            _rb.bodyType = RigidbodyType2D.Dynamic;
+            _rb.useFullKinematicContacts = true;
+            _rb.sharedMaterial = new PhysicsMaterial2D("NoBounce") {bounciness = 0.0f, friction = 1.0f};
             _rb.mass = mass;
             _rb.drag = 0;
             _rb.angularDrag = 0;
@@ -90,8 +94,8 @@ namespace Physics
             }
 
             currentVelocity = _rb.velocity;
-            terminalVelocityXReached = Mathf.Approximately(Mathf.Abs(_previousVelocity.x), Mathf.Abs(_rb.velocity.x));
-            terminalVelocityYReached = Mathf.Approximately(Mathf.Abs(_previousVelocity.y), Mathf.Abs(_rb.velocity.y));
+            terminalVelocityXReached = Mathf.Approximately(Mathf.Abs(_cachedVelocity.x), Mathf.Abs(_rb.velocity.x));
+            terminalVelocityYReached = Mathf.Approximately(Mathf.Abs(_cachedVelocity.y), Mathf.Abs(_rb.velocity.y));
 
             if (useQuickDrag)
             {
@@ -104,28 +108,36 @@ namespace Physics
                 ApplyGravity();
             }
 
-            _previousVelocity = _rb.velocity;
+            _cachedVelocity = _rb.velocity;
         }
 
         /// <summary>
-        /// Coefficient of restitution (bounciness)
+        /// Use Coefficient of restitution (bounciness) and reflection to determine new velocity
         /// </summary>
-        /// <param name="other"></param>
         private void OnCollisionEnter2D(Collision2D other)
         {
-            Vector2 velocity = _previousVelocity;
+            Vector2 collisionNormal = other.contacts[0].normal;
             if (other.collider.TryGetComponent(out PhysicsBody2D body))
             {
-                velocity = (mass * velocity + body.Mass * body.Velocity +
-                            body.Mass * bounciness * (body.Velocity - velocity)) / (mass + body.Mass);
+                // Calculate velocity after collision with another physicsBody2D
+                Vector2 newVelocity =
+                    (mass * _cachedVelocity + body.Mass * body.CachedVelocity +
+                     body.Mass * bounciness * (body.CachedVelocity - _cachedVelocity)) / (mass + body.Mass);
+
+                float magnitude =
+                    (mass * _cachedVelocity.magnitude + body.Mass * body.CachedVelocity.magnitude + body.Mass *
+                        bounciness * (body.CachedVelocity.magnitude - _cachedVelocity.magnitude)) / (mass + body.Mass);
+
+                // If the collision causes a reflection (negative mag), reflect the velocity off the collision normal
+                newVelocity = magnitude < 0 ? Vector2.Reflect(-newVelocity, collisionNormal) : newVelocity;
+
+                _rb.velocity = newVelocity;
             }
             else
             {
                 // Simplified version for collisions with non-rigidbodies
-                velocity = bounciness * -velocity / mass;
+                _rb.velocity = bounciness * Vector2.Reflect(_cachedVelocity, collisionNormal);
             }
-
-            _rb.velocity = velocity;
         }
 
         private void OnTriggerEnter2D(Collider2D other)

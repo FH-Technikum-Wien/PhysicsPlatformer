@@ -2,7 +2,7 @@ using UnityEditor;
 
 namespace Physics
 {
-    [CustomEditor(typeof(PhysicsBody2D))]
+    [CustomEditor(typeof(PhysicsBody2D)), CanEditMultipleObjects]
     public class PhysicsBody2DEditor : Editor
     {
         public override void OnInspectorGUI()
