@@ -1,8 +1,7 @@
-using System;
 using Physics;
 using UnityEngine;
 
-namespace Input
+namespace Player
 {
     /// <summary>
     /// Linear drag of "20" is pretty good
@@ -60,7 +59,7 @@ namespace Input
         private void OnCollisionEnter2D(Collision2D other)
         {
             // Collision Normals to determine if player is grounded
-            if (Math.Acos(other.contacts[0].normal.y) < Mathf.Deg2Rad * groundAngle)
+            if (Mathf.Acos(other.contacts[0].normal.y) < Mathf.Deg2Rad * groundAngle)
                 isGrounded = true;
         }
 
