@@ -34,13 +34,15 @@ namespace World
             progress *= amplitude;
 
             // Convert progress to velocity
-            Vector2 difference = (_startPosition + moveDirection.normalized * progress) - (Vector2) transform.position;
-            Vector2 velocity = _pb.Velocity - difference;
-            _pb.AddVelocity(moveDirection.normalized * (progress * Time.fixedDeltaTime));
+            Vector2 distance = (_startPosition + moveDirection.normalized * progress) - (Vector2) transform.position;
+            Vector2 newVelocity = distance / Time.fixedDeltaTime;
+            Vector2 acceleration = (newVelocity - _pb.Velocity) / Time.fixedDeltaTime;
+            _pb.AddVelocity(acceleration * Time.fixedDeltaTime);
 
             foreach (PhysicsBody2D body in _bodies)
             {
                 body.SetBaseVelocity(_pb.Velocity);
+                body.AddVelocity(acceleration * Time.fixedDeltaTime);
             }
         }
 
@@ -49,7 +51,6 @@ namespace World
             if (other.collider.TryGetComponent(out PhysicsBody2D body))
             {
                 _bodies.Add(body);
-                //body.AddVelocity(_pb.Velocity);
                 body.SetBaseVelocity(_pb.Velocity);
             }
         }
