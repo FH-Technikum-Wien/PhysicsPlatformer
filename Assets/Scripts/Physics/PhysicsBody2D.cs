@@ -1,4 +1,5 @@
 using UnityEngine;
+using Util;
 
 namespace Physics
 {
@@ -117,6 +118,7 @@ namespace Physics
             terminalVelocityXReached = Mathf.Approximately(Mathf.Abs(_cachedVelocity.x), Mathf.Abs(_rb.velocity.x));
             terminalVelocityYReached = Mathf.Approximately(Mathf.Abs(_cachedVelocity.y), Mathf.Abs(_rb.velocity.y));
 
+            // Base velocity reset over time
             if (_resetBaseVelocity && _resetBaseVelocityTime + _resetBaseVelocityDelay <= Time.time)
             {
                 _baseVelocity = Vector2.Lerp(_baseVelocity, Vector2.zero, 2.0f * Time.fixedDeltaTime);
@@ -157,30 +159,14 @@ namespace Physics
 
             Vector2 collisionNormal = other.contacts[0].normal;
 
-            // Simplified collision with non physics bodies or kinematic bodies
+            // Simplified collision with non physics bodies or kinematic physic bodies
             if (!other.collider.TryGetComponent(out PhysicsBody2D body) || body.bodyType == Type.Kinematic)
             {
-                _rb.velocity = bounciness * Vector2.Reflect(_cachedVelocity * -collisionNormal, collisionNormal) +
-                               _cachedVelocity * new Vector2(1 - Mathf.Abs(collisionNormal.x),
-                                   1 - Mathf.Abs(collisionNormal.y));
+                CollisionWithStatic(collisionNormal);
             }
             else if (body.bodyType == Type.Dynamic)
             {
-                float mixedBounciness = (bounciness + body.bounciness) / 2.0f;
-
-                // Calculate velocity after collision with another physicsBody2D
-                Vector2 newVelocity =
-                    (mass * _cachedVelocity + body.Mass * body.CachedVelocity +
-                     body.Mass * mixedBounciness * (body.CachedVelocity - _cachedVelocity)) / (mass + body.Mass);
-
-                float magnitude =
-                    (mass * _cachedVelocity.magnitude + body.Mass * body.CachedVelocity.magnitude + body.Mass *
-                        bounciness * (body.CachedVelocity.magnitude - _cachedVelocity.magnitude)) / (mass + body.Mass);
-
-                // If the collision causes a reflection (negative mag), reflect the new velocity off the collision normal
-                newVelocity = magnitude < 0 ? Vector2.Reflect(-newVelocity, collisionNormal) : newVelocity;
-
-                _rb.velocity = newVelocity;
+                CollisionWithDynamicPhysicsBody(body, collisionNormal);
             }
         }
 
@@ -277,6 +263,32 @@ namespace Physics
         private void ApplyGravity()
         {
             _rb.velocity -= GlobalGravity * (gravityScale * Time.fixedDeltaTime);
+        }
+
+        private void CollisionWithStatic(Vector2 collisionNormal)
+        {
+            Vector2 collisionNormalAbs = collisionNormal.Abs();
+            _rb.velocity = bounciness * Vector2.Reflect(_cachedVelocity * collisionNormalAbs, collisionNormal) +
+                           _cachedVelocity * (Vector2.one - collisionNormalAbs);
+        }
+
+        private void CollisionWithDynamicPhysicsBody(PhysicsBody2D body, Vector2 collisionNormal)
+        {
+            float mixedBounciness = (bounciness + body.bounciness) / 2.0f;
+
+            // Calculate velocity after collision with another physicsBody2D
+            Vector2 newVelocity =
+                (mass * _cachedVelocity + body.Mass * body.CachedVelocity +
+                 body.Mass * mixedBounciness * (body.CachedVelocity - _cachedVelocity)) / (mass + body.Mass);
+
+            float magnitude =
+                (mass * _cachedVelocity.magnitude + body.Mass * body.CachedVelocity.magnitude + body.Mass *
+                    bounciness * (body.CachedVelocity.magnitude - _cachedVelocity.magnitude)) / (mass + body.Mass);
+
+            // If the collision causes a reflection (negative mag), reflect the new velocity off the collision normal
+            newVelocity = magnitude < 0 ? Vector2.Reflect(-newVelocity, collisionNormal) : newVelocity;
+
+            _rb.velocity = newVelocity;
         }
     }
 }
