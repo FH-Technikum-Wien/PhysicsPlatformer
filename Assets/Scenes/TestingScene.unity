@@ -388,21 +388,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 3
+  mass: 1
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
   bounciness: 1
   showDebugValues: 1
-  currentVelocity: {x: 0, y: 0}
+  currentVelocity: {x: 2, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
   addVelocityToBody: 1
-  velocityToAdd: {x: 2, y: 0}
+  velocityToAdd: {x: 0, y: 0}
 --- !u!50 &285966417
 Rigidbody2D:
   serializedVersion: 4
@@ -552,7 +552,7 @@ MonoBehaviour:
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -561,7 +561,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &333078343
 Rigidbody2D:
@@ -900,11 +900,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 3
+  mass: 1
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -913,7 +913,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &674032497
 Rigidbody2D:
@@ -1064,7 +1064,7 @@ MonoBehaviour:
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -1073,7 +1073,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &745974591
 Rigidbody2D:
@@ -1253,7 +1253,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 756827284}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 55.12, y: 26.49, z: 0}
+  m_LocalPosition: {x: 57.46, y: 26.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 519420032}
@@ -1344,12 +1344,12 @@ MonoBehaviour:
   gravityScale: 3
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 1
-  materialDensity: 1.225
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
-  quickDrag: 0.0215
-  bounciness: 0.5
-  showDebugValues: 1
+  quickDrag: 0.05
+  bounciness: 0.4
+  showDebugValues: 0
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
@@ -1511,11 +1511,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 3
+  mass: 1
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -1524,7 +1524,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &913471130
 Rigidbody2D:
@@ -1675,7 +1675,7 @@ MonoBehaviour:
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -2016,8 +2016,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quickDrag: 0.434
-  materialType: 2
-  materialDensity: 0
+  elementType: 0
 --- !u!1 &1172273937
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,11 +2050,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 1000
+  mass: 1
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -2064,7 +2063,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &1172273939
 Rigidbody2D:
@@ -2229,7 +2228,7 @@ MonoBehaviour:
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -2238,7 +2237,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &1184854624
 Rigidbody2D:
@@ -2494,11 +2493,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 3
+  mass: 1
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -2507,7 +2506,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &1224485647
 Rigidbody2D:
@@ -2736,7 +2735,7 @@ MonoBehaviour:
   gravityScale: 1
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 1
-  materialDensity: 1.225
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -2745,8 +2744,8 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
-  velocityToAdd: {x: 2, y: 0}
+  addVelocityToBody: 0
+  velocityToAdd: {x: 0, y: 0}
 --- !u!50 &1298499336
 Rigidbody2D:
   serializedVersion: 4
@@ -2781,7 +2780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frequency: 0.25
-  amplitude: 1
+  amplitude: 4
   moveDirection: {x: 1, y: 0}
   useCos: 0
 --- !u!1 &1394277036
@@ -2944,7 +2943,7 @@ MonoBehaviour:
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1.225
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -3318,11 +3317,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 3
+  mass: 1
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -3331,7 +3330,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &1525532604
 Rigidbody2D:
@@ -3607,11 +3606,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 2
+  mass: 1
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -3620,7 +3619,7 @@ MonoBehaviour:
   currentVelocity: {x: 0, y: 0}
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
-  addVelocityToBody: 1
+  addVelocityToBody: 0
   velocityToAdd: {x: 0, y: 0}
 --- !u!50 &1718738587
 Rigidbody2D:
@@ -4237,8 +4236,8 @@ MonoBehaviour:
   mass: 1
   gravityScale: 1
   dragAxisFactor: {x: 1, y: 1}
-  dragCoefficient: 0
-  materialDensity: 1.225
+  dragCoefficient: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -4248,7 +4247,7 @@ MonoBehaviour:
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
   addVelocityToBody: 1
-  velocityToAdd: {x: 6, y: 0}
+  velocityToAdd: {x: 2, y: 0}
 --- !u!50 &1981432818
 Rigidbody2D:
   serializedVersion: 4
@@ -4408,11 +4407,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyType: 0
-  mass: 1000
+  mass: 20
   gravityScale: 0
   dragAxisFactor: {x: 1, y: 1}
   dragCoefficient: 0
-  materialDensity: 1
+  elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
@@ -4422,7 +4421,7 @@ MonoBehaviour:
   terminalVelocityXReached: 0
   terminalVelocityYReached: 0
   addVelocityToBody: 1
-  velocityToAdd: {x: 0, y: 0}
+  velocityToAdd: {x: 0, y: 1}
 --- !u!50 &2044579900
 Rigidbody2D:
   serializedVersion: 4

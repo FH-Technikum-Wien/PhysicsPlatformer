@@ -22,77 +22,77 @@ namespace Physics
         /// <summary>
         /// The mass of this physics body
         /// </summary>
-        public float Mass { get; set; } = 1.0f;
+        [HideInInspector] public float mass = 1.0f;
 
         /// <summary>
         /// Factor applied to the global gravity
         /// </summary>
-        public float GravityScale { get; set; } = 1.0f;
+        [HideInInspector] public float gravityScale = 1.0f;
 
         /// <summary>
         /// A factor applied to the drag on each axis. Can be used to customise the drag for each axis (not realistic)
         /// </summary>
-        public Vector2 DragAxisFactor { get; set; } = new Vector2(1.0f, 1.0f);
+        [HideInInspector] public Vector2 dragAxisFactor = new Vector2(1.0f, 1.0f);
 
         /// <summary>
         /// The drag coefficient of the object/shape
         /// </summary>
-        public float DragCoefficient { get; set; } = 1f;
+        [HideInInspector] public float dragCoefficient = 1f;
 
         /// <summary>
         /// The density of the element the physics body is currently in
         /// </summary>
-        public float ElementDensity { get; set; } = 1.225f;
+        [HideInInspector] public float elementDensity = 1.225f;
 
         /// <summary>
         /// The area affected by the material density creating the drag
         /// </summary>
-        public float FrontalArea { get; set; } = 1;
+        [HideInInspector] public float frontalArea = 1;
 
         /// <summary>
         /// Use quickDrag instead of correct drag [0-1]
         /// </summary>
-        public bool UseQuickDrag { get; set; }
+        [HideInInspector] public bool useQuickDrag;
 
         /// <summary>
         /// QuickDrag amount. Higher than 1 reverts, lower than 0 accelerates
         /// </summary>
-        public float QuickDrag { get; set; } = 0.05f;
+        [HideInInspector] public float quickDrag = 0.05f;
 
         /// <summary>
         /// The bounciness of the physics body. < 0 -> 'Phasing' | 0-1 -> Bounce | > 1 -> Explosion
         /// </summary>
-        public float Bounciness { get; set; } = 1.0f;
+        [HideInInspector] public float bounciness = 1.0f;
 
         /// <summary>
         /// Display debug values and buttons
         /// </summary>
-        public bool ShowDebugValues { get; set; }
+        [HideInInspector] public bool showDebugValues;
 
         /// <summary>
         /// The current velocity
         /// </summary>
-        public Vector2 CurrentVelocity { get; set; }
+        [HideInInspector] public Vector2 currentVelocity;
 
         /// <summary>
         /// Whether we reached terminal velocity on Y
         /// </summary>
-        public bool TerminalVelocityXReached { get; set; }
+        [HideInInspector] public bool terminalVelocityXReached;
 
         /// <summary>
         /// Whether we reached terminal velocity on Y
         /// </summary>
-        public bool TerminalVelocityYReached { get; set; }
+        [HideInInspector] public bool terminalVelocityYReached;
 
         /// <summary>
         /// Adds the specified velocity to the body
         /// </summary>
-        public bool AddVelocityToBody { get; set; }
+        [HideInInspector] public bool addVelocityToBody;
 
         /// <summary>
         /// The velocity to add with the 'AddVelocityToBody' button
         /// </summary>
-        public Vector2 VelocityToAdd { get; set; }
+        [HideInInspector] public Vector2 velocityToAdd;
 
 
         /// <summary>
@@ -144,7 +144,9 @@ namespace Physics
         /// The default element density the body is moving through. Should probably always be air
         /// </summary>
         private readonly float _defaultElementDensity =
-            Physics.ElementDensity.GetMaterialDensity(Physics.ElementDensity.ElementType.Air);
+            ElementDensity.GetMaterialDensity(ElementDensity.ElementType.Air);
+
+        private const float COLLISION_MAGNITUDE_TOLERANCE = -0.1f;
 
         private void Awake()
         {
@@ -162,7 +164,7 @@ namespace Physics
             else
             {
                 _rb.bodyType = RigidbodyType2D.Dynamic;
-                _rb.mass = Mass;
+                _rb.mass = mass;
                 _rb.drag = 0;
                 _rb.angularDrag = 0;
                 _rb.gravityScale = 0;
@@ -172,15 +174,15 @@ namespace Physics
         private void FixedUpdate()
         {
             // Debug values
-            if (AddVelocityToBody)
+            if (addVelocityToBody)
             {
-                AddVelocityToBody = false;
-                _rb.velocity = VelocityToAdd;
+                addVelocityToBody = false;
+                _rb.velocity = velocityToAdd;
             }
 
-            CurrentVelocity = _rb.velocity;
-            TerminalVelocityXReached = Mathf.Approximately(Mathf.Abs(CachedVelocity.x), Mathf.Abs(_rb.velocity.x));
-            TerminalVelocityYReached = Mathf.Approximately(Mathf.Abs(CachedVelocity.y), Mathf.Abs(_rb.velocity.y));
+            currentVelocity = _rb.velocity;
+            terminalVelocityXReached = Mathf.Approximately(Mathf.Abs(CachedVelocity.x), Mathf.Abs(_rb.velocity.x));
+            terminalVelocityYReached = Mathf.Approximately(Mathf.Abs(CachedVelocity.y), Mathf.Abs(_rb.velocity.y));
 
             // Base velocity reset over time
             if (_resetBaseVelocity && _resetBaseVelocityTime + _resetBaseVelocityDelay <= Time.time)
@@ -197,7 +199,7 @@ namespace Physics
             // Only apply gravity and drag if dynamic
             if (bodyType == Type.Dynamic)
             {
-                if (UseQuickDrag)
+                if (useQuickDrag)
                 {
                     ApplyGravity();
                     ApplyQuickDrag();
@@ -243,9 +245,9 @@ namespace Physics
             // Change drag
             if (!other.TryGetComponent(out Element dragChanger))
                 return;
-            _oldQuickDrag = QuickDrag;
-            QuickDrag = dragChanger.quickDrag;
-            ElementDensity = dragChanger.ElementDensity;
+            _oldQuickDrag = quickDrag;
+            quickDrag = dragChanger.quickDrag;
+            elementDensity = dragChanger.ElementDensity;
         }
 
         /// <summary>
@@ -258,8 +260,8 @@ namespace Physics
             if (!other.TryGetComponent(out Element _))
                 return;
             // Revert drag
-            ElementDensity = _defaultElementDensity;
-            QuickDrag = _oldQuickDrag;
+            elementDensity = _defaultElementDensity;
+            quickDrag = _oldQuickDrag;
         }
 
         /// <summary>
@@ -324,10 +326,10 @@ namespace Physics
             Vector2 velocity = _rb.velocity - BaseVelocity;
 
             // Treat x and y separately
-            float xDrag = DragAxisFactor.x * DragCoefficient * ElementDensity * FrontalArea
-                * velocity.x * velocity.x / (2 * Mass);
-            float yDrag = DragAxisFactor.y * DragCoefficient * ElementDensity * FrontalArea
-                * velocity.y * velocity.y / (2 * Mass);
+            float xDrag = dragAxisFactor.x * dragCoefficient * elementDensity * frontalArea
+                * velocity.x * velocity.x / (2 * mass);
+            float yDrag = dragAxisFactor.y * dragCoefficient * elementDensity * frontalArea
+                * velocity.y * velocity.y / (2 * mass);
 
             _rb.velocity += new Vector2(
                 xDrag * -Mathf.Sign(velocity.x),
@@ -340,7 +342,7 @@ namespace Physics
         /// </summary>
         private void ApplyQuickDrag()
         {
-            _rb.velocity *= (1 - QuickDrag);
+            _rb.velocity *= (1 - quickDrag);
         }
 
         /// <summary>
@@ -348,7 +350,7 @@ namespace Physics
         /// </summary>
         private void ApplyGravity()
         {
-            _rb.velocity -= GlobalGravity * (GravityScale * Time.fixedDeltaTime);
+            _rb.velocity -= GlobalGravity * (gravityScale * Time.fixedDeltaTime);
         }
 
         /// <summary>
@@ -358,7 +360,7 @@ namespace Physics
         private void CollisionWithStatic(Vector2 collisionNormal)
         {
             Vector2 collisionNormalAbs = collisionNormal.Abs();
-            _rb.velocity = Bounciness * Vector2.Reflect(CachedVelocity * collisionNormalAbs, collisionNormal) +
+            _rb.velocity = bounciness * Vector2.Reflect(CachedVelocity * collisionNormalAbs, collisionNormal) +
                            CachedVelocity * (Vector2.one - collisionNormalAbs);
         }
 
@@ -369,19 +371,21 @@ namespace Physics
         /// <param name="collisionNormal">The collision normal</param>
         private void CollisionWithDynamicPhysicsBody(PhysicsBody2D body, Vector2 collisionNormal)
         {
-            float mixedBounciness = (Bounciness + body.Bounciness) / 2.0f;
+            float mixedBounciness = (bounciness + body.bounciness) / 2.0f;
 
             // Calculate velocity after collision with another physicsBody2D
             Vector2 newVelocity =
-                (Mass * CachedVelocity + body.Mass * body.CachedVelocity +
-                 body.Mass * mixedBounciness * (body.CachedVelocity - CachedVelocity)) / (Mass + body.Mass);
+                (mass * CachedVelocity + body.mass * body.CachedVelocity +
+                 body.mass * mixedBounciness * (body.CachedVelocity - CachedVelocity)) / (mass + body.mass);
 
             float magnitude =
-                (Mass * CachedVelocity.magnitude + body.Mass * body.CachedVelocity.magnitude + body.Mass *
-                    Bounciness * (body.CachedVelocity.magnitude - CachedVelocity.magnitude)) / (Mass + body.Mass);
+                (mass * CachedVelocity.magnitude + body.mass * body.CachedVelocity.magnitude + body.mass *
+                    bounciness * (body.CachedVelocity.magnitude - CachedVelocity.magnitude)) / (mass + body.mass);
 
             // If the collision causes a reflection (negative mag), reflect the new velocity off the collision normal
-            newVelocity = magnitude < 0 ? Vector2.Reflect(-newVelocity, collisionNormal) : newVelocity;
+            newVelocity = magnitude < COLLISION_MAGNITUDE_TOLERANCE
+                ? Vector2.Reflect(-newVelocity, collisionNormal)
+                : newVelocity;
 
             _rb.velocity = newVelocity;
         }
