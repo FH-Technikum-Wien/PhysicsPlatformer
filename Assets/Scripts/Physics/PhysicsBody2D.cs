@@ -154,6 +154,7 @@ namespace Physics
 
             // Disable/Set rigidbody behaviour 
             _rb.sharedMaterial = new PhysicsMaterial2D("NoBounce") {bounciness = 0.0f, friction = 1.0f};
+            _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
             if (bodyType == Type.Kinematic)
             {
