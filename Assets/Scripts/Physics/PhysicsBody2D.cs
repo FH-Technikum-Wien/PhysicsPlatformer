@@ -117,10 +117,14 @@ namespace Physics
         /// </summary>
         public Vector2 BaseVelocity { get; private set; }
 
+        public Collider2D Collider2D => _collider2D;
+
         /// <summary>
         /// The internal rigidbody component
         /// </summary>
         private Rigidbody2D _rb;
+
+        private Collider2D _collider2D;
 
         /// <summary>
         /// The old drag for quick drag
@@ -153,6 +157,7 @@ namespace Physics
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
+            _collider2D = GetComponent<Collider2D>();
 
             // Disable/Set rigidbody behaviour 
             _rb.sharedMaterial = new PhysicsMaterial2D("NoBounce") {bounciness = 0.0f, friction = 1.0f};
@@ -314,6 +319,12 @@ namespace Physics
 
             _resetBaseVelocityTime = Time.time;
             _resetBaseVelocity = true;
+        }
+
+        public void SetEnabled(bool setEnabled)
+        {
+            enabled = setEnabled;
+            _rb.simulated = setEnabled;
         }
 
         /// <summary>

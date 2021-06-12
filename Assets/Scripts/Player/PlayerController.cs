@@ -33,6 +33,9 @@ namespace Player
         [Header("Abilities")] [SerializeField] [Tooltip("The ability to turn the world around!")]
         private RotateWorldAbility rotateWorldAbility;
 
+        [SerializeField] [Tooltip("The ability to throw objects")]
+        private ThrowAbility throwAbility;
+
         [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
         private bool isGrounded;
 
@@ -46,7 +49,8 @@ namespace Player
 
         private void Update()
         {
-            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)))
+            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) ||
+                               Input.GetKeyDown(KeyCode.Joystick1Button0)))
             {
                 isGrounded = false;
                 _pb.ApplyForce(transform.rotation * new Vector2(0, jumpForce));
@@ -66,6 +70,20 @@ namespace Player
             {
                 rotateWorldAbility.RotateWorldUp();
             }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (throwAbility.IsHolding)
+                    throwAbility.Drop();
+                else
+                    throwAbility.PickUp();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                if (throwAbility.IsHolding)
+                    throwAbility.Throw();
+            }
         }
 
         private void FixedUpdate()
@@ -83,7 +101,7 @@ namespace Player
         private void AddInput()
         {
             // Get raw input for applying own dead zones
-            float inputX = UnityEngine.Input.GetAxisRaw("Horizontal");
+            float inputX = Input.GetAxisRaw("Horizontal");
 
             // Apply custom dead zones
             Vector2 input = ApplyDeadZones(new Vector2(inputX, 0), innerDeadZone, outerDeadZone);
@@ -96,6 +114,17 @@ namespace Player
                 _pb.ApplyForce(input * forceMagnitude);
             else
                 _pb.SetVelocity(input * velocityMagnitude);
+
+            // Get mouse for looking around
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 lookDirection = (mousePosition - (Vector2) transform.position);
+
+            if (Vector2.SignedAngle(Vector2.up, lookDirection) > 0)
+                transform.localScale = new Vector3(-1, 1.5f, 1);
+            else
+                transform.localScale = new Vector3(1, 1.5f, 1);
+
+            throwAbility.SetThrowDirection(lookDirection.normalized);
         }
 
         /// <summary>
