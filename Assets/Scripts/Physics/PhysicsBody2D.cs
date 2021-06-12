@@ -6,10 +6,12 @@ namespace Physics
     [RequireComponent(typeof(Rigidbody2D))]
     public class PhysicsBody2D : MonoBehaviour
     {
+        public static float GlobalGravityAcceleration = 9.81f;
+
         /// <summary>
         /// The gravity applied to all <see cref="PhysicsBody2D"/>s.
         /// </summary>
-        public static Vector2 GlobalGravity = new Vector2(0.0f, 9.81f);
+        public static Vector2 GlobalGravity = new Vector2(0.0f, GlobalGravityAcceleration);
 
         public enum Type { Dynamic, Kinematic }
 

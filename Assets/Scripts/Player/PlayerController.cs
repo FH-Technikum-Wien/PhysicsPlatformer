@@ -7,7 +7,7 @@ namespace Player
     /// Linear drag of "20" is pretty good
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Controller : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         [Header("Movement")] [SerializeField] [Tooltip("Switches between force and velocity based movement")]
         private bool useForceBasedMovement = true;
@@ -24,12 +24,14 @@ namespace Player
         [SerializeField] [Range(0, 90)] [Tooltip("The angle which determines what counts as ground for jumping")]
         private float groundAngle = 30.0f;
 
-
         [Header("Controller")] [SerializeField] [Tooltip("Inner dead zone of the controller")]
         private float innerDeadZone = 0.1f;
 
         [SerializeField] [Tooltip("Outer dead zone of the controller")]
         private float outerDeadZone = 0.9f;
+
+        [Header("Abilities")] [SerializeField] [Tooltip("The ability to turn the world around!")]
+        private RotateWorldAbility rotateWorldAbility;
 
         [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
         private bool isGrounded;
@@ -44,10 +46,25 @@ namespace Player
 
         private void Update()
         {
-            if (isGrounded && (UnityEngine.Input.GetKeyDown(KeyCode.Space) || UnityEngine.Input.GetKeyDown(KeyCode.W)))
+            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)))
             {
                 isGrounded = false;
-                _pb.ApplyForce(new Vector2(0, jumpForce));
+                _pb.ApplyForce(transform.rotation * new Vector2(0, jumpForce));
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                rotateWorldAbility.RotateWorldLeft();
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                rotateWorldAbility.RotateWorldRight();
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                rotateWorldAbility.RotateWorldUp();
             }
         }
 
@@ -59,7 +76,7 @@ namespace Player
         private void OnCollisionEnter2D(Collision2D other)
         {
             // Collision Normals to determine if player is grounded
-            if (Mathf.Acos(other.contacts[0].normal.y) < Mathf.Deg2Rad * groundAngle)
+            if (Vector2.Angle(other.contacts[0].normal, transform.rotation * Vector2.up) < groundAngle)
                 isGrounded = true;
         }
 
@@ -70,6 +87,9 @@ namespace Player
 
             // Apply custom dead zones
             Vector2 input = ApplyDeadZones(new Vector2(inputX, 0), innerDeadZone, outerDeadZone);
+
+            // Transform to correct player space
+            input = transform.rotation * input;
 
             // Apply to rigidbody
             if (useForceBasedMovement)
