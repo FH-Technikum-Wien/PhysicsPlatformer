@@ -1,6 +1,7 @@
 using System.Collections;
 using Physics;
 using UnityEngine;
+using World;
 
 namespace Player
 {
@@ -13,26 +14,43 @@ namespace Player
 
         public void RotateWorldLeft()
         {
-            StartCoroutine(RotateWordCoroutine(-90));
+            // Skip if already rotating
+            if (_isRotating)
+                return;
+            _isRotating = true;
+            StartCoroutine(RotateWorldCoroutine(-90));
+            WorldManager.ChangeGravityDirection(-1);
         }
 
         public void RotateWorldRight()
         {
-            StartCoroutine(RotateWordCoroutine(90));
+            // Skip if already rotating
+            if (_isRotating)
+                return;
+            _isRotating = true;
+            StartCoroutine(RotateWorldCoroutine(90));
+            WorldManager.ChangeGravityDirection(1);
         }
 
         public void RotateWorldUp()
         {
-            StartCoroutine(RotateWordCoroutine(180));
-        }
-
-        private IEnumerator RotateWordCoroutine(int rotationAmount)
-        {
             // Skip if already rotating
             if (_isRotating)
-                yield break;
+                return;
             _isRotating = true;
+            StartCoroutine(RotateWorldCoroutine(180));
+            WorldManager.ChangeGravityDirection(2);
+        }
 
+        public void ResetWorldRotation()
+        {
+            transform.rotation = Quaternion.identity;
+            PhysicsBody2D.GlobalGravity = transform.rotation * Vector3.up * PhysicsBody2D.GlobalGravityAcceleration;
+            WorldManager.GravityDirection = GravityDirection.Down;
+        }
+
+        private IEnumerator RotateWorldCoroutine(int rotationAmount)
+        {
             // Stop everything
             Time.timeScale = 0.0f;
 

@@ -1,5 +1,6 @@
 using Physics;
 using UnityEngine;
+using World;
 
 namespace Player
 {
@@ -30,11 +31,14 @@ namespace Player
         [SerializeField] [Tooltip("Outer dead zone of the controller")]
         private float outerDeadZone = 0.9f;
 
-        [Header("Abilities")] [SerializeField] [Tooltip("The ability to turn the world around!")]
-        private RotateWorldAbility rotateWorldAbility;
-
-        [SerializeField] [Tooltip("The ability to throw objects")]
+        [Header("Abilities")] [SerializeField] [Tooltip("The ability to throw objects")]
         private ThrowAbility throwAbility;
+
+        [SerializeField] private float holdingSlownessFactor = 0.5f;
+
+        [SerializeField] [Tooltip("The ability to turn the world around!")]
+        private ChangeGravityAbility changeGravityAbility;
+
 
         [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
         private bool isGrounded;
@@ -42,9 +46,14 @@ namespace Player
         private PhysicsBody2D _pb;
         private Vector2 _velocityChange;
 
+        private Vector2 _levelStartPosition;
+        private CheckPoint _lastCheckPoint;
+
         private void Awake()
         {
             _pb = GetComponent<PhysicsBody2D>();
+            // Save start position for respawning with no active checkpoint
+            _levelStartPosition = transform.position;
         }
 
         private void Update()
@@ -53,36 +62,48 @@ namespace Player
                                Input.GetKeyDown(KeyCode.Joystick1Button0)))
             {
                 isGrounded = false;
-                _pb.ApplyForce(transform.rotation * new Vector2(0, jumpForce));
+                _pb.ApplyForce(transform.rotation *
+                               new Vector2(0, jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                rotateWorldAbility.RotateWorldLeft();
+                changeGravityAbility.SetGravity(GravityDirection.Left);
             }
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                rotateWorldAbility.RotateWorldRight();
+                changeGravityAbility.SetGravity(GravityDirection.Right);
             }
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                rotateWorldAbility.RotateWorldUp();
+                changeGravityAbility.SetGravity(GravityDirection.Up);
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                changeGravityAbility.SetGravity(GravityDirection.Down);
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
                 if (throwAbility.IsHolding)
+                {
                     throwAbility.Drop();
+                }
                 else
+                {
                     throwAbility.PickUp();
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 if (throwAbility.IsHolding)
+                {
                     throwAbility.Throw();
+                }
             }
         }
 
@@ -98,6 +119,28 @@ namespace Player
                 isGrounded = true;
         }
 
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (!other.TryGetComponent(out CheckPoint checkPoint))
+                return;
+
+            if (_lastCheckPoint == null || _lastCheckPoint.Index < checkPoint.Index)
+                _lastCheckPoint = checkPoint;
+        }
+
+        public void Kill()
+        {
+            changeGravityAbility.SetGravity(GravityDirection.Down);
+            transform.position = _lastCheckPoint != null
+                ? _lastCheckPoint.transform.position
+                : (Vector3) _levelStartPosition;
+        }
+
+        public void AddMass(float massToAdd)
+        {
+            _pb.AddMass(massToAdd);
+        }
+
         private void AddInput()
         {
             // Get raw input for applying own dead zones
@@ -111,7 +154,7 @@ namespace Player
 
             // Apply to rigidbody
             if (useForceBasedMovement)
-                _pb.ApplyForce(input * forceMagnitude);
+                _pb.ApplyForce(input * (forceMagnitude * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
             else
                 _pb.SetVelocity(input * velocityMagnitude);
 

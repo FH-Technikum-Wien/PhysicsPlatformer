@@ -14,11 +14,19 @@ namespace Physics
 
             if (script.BodyType == PhysicsBody2D.Type.Dynamic)
             {
+                if (script.useCustomGravity)
+                {
+                    script.customGravity = EditorGUILayout.Vector2Field(new GUIContent("Custom Gravity",
+                        "Custom gravity applied to the body"), script.customGravity);
+                }
+                else
+                {
+                    script.gravityScale = EditorGUILayout.FloatField(new GUIContent("Gravity Scale",
+                        "Factor applied to the global gravity"), script.gravityScale);
+                }
+
                 script.mass = EditorGUILayout.FloatField(new GUIContent("Mass",
                     "The mass of this physics body"), script.mass);
-
-                script.gravityScale = EditorGUILayout.FloatField(new GUIContent("Gravity Scale",
-                    "Factor applied to the global gravity"), script.gravityScale);
 
                 EditorGUILayout.Space(10);
                 EditorGUILayout.LabelField("Drag", EditorStyles.boldLabel);
@@ -71,6 +79,9 @@ namespace Physics
                 script.velocityToAdd = EditorGUILayout.Vector2Field("Velocity To Add", script.velocityToAdd);
                 EditorGUILayout.Vector2Field("Base velocity", script.BaseVelocity);
             }
+
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(serializedObject.targetObject);
         }
     }
 }

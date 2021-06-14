@@ -1,6 +1,7 @@
+using Physics;
 using UnityEngine;
 
-namespace Physics
+namespace Player
 {
     [RequireComponent(typeof(Collider2D))]
     public class ThrowAbility : MonoBehaviour
@@ -15,7 +16,11 @@ namespace Physics
 
         public bool IsHolding => _pickedUpBody != null;
 
+        public float PickedUpBodyMass => _pickedUpBody.mass;
+
         private PhysicsBody2D _pickedUpBody;
+
+        private float _throwFactor = 1.0f;
 
         private void Awake()
         {
@@ -42,6 +47,11 @@ namespace Physics
             body.Collider2D.isTrigger = false;
         }
 
+        public void SetThrowFactor(float throwFactor)
+        {
+            _throwFactor = throwFactor;
+        }
+
         public void SetThrowDirection(Vector2 directionNormalized)
         {
             throwDirection = directionNormalized;
@@ -49,13 +59,18 @@ namespace Physics
 
         public void PickUp()
         {
-            Collider2D collider2D = Physics2D.OverlapCircle(transform.position, 2.0f, mask);
-            if (collider2D == null || !collider2D.TryGetComponent(out PhysicsBody2D body))
-                return;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2.0f, mask);
 
-            _pickedUpBody = body;
-            _pickedUpBody.gameObject.layer = gameObject.layer;
-            _pickedUpBody.SetEnabled(false);
+            foreach (Collider2D collider in colliders)
+            {
+                if (!collider.TryGetComponent(out PhysicsBody2D body))
+                    continue;
+
+                _pickedUpBody = body;
+                _pickedUpBody.gameObject.layer = gameObject.layer;
+                _pickedUpBody.SetEnabled(false);
+                return;
+            }
         }
 
         public void Throw()
@@ -64,7 +79,7 @@ namespace Physics
             _pickedUpBody.Collider2D.isTrigger = true;
 
             _pickedUpBody.SetEnabled(true);
-            _pickedUpBody.SetVelocity(throwDirection * throwStrength);
+            _pickedUpBody.SetVelocity(throwDirection * (throwStrength * _throwFactor));
             _pickedUpBody.gameObject.layer = 0;
             _pickedUpBody = null;
         }
@@ -83,8 +98,9 @@ namespace Physics
         {
             for (float i = 0; i < Time.fixedDeltaTime * predictionLength; i += Time.fixedDeltaTime)
             {
-                Vector2 u = throwDirection * throwStrength;
-                Vector2 a = -PhysicsBody2D.GlobalGravity;
+                // SUVAT
+                Vector2 u = throwDirection * (throwStrength * _throwFactor);
+                Vector2 a = -PhysicsBody2D.GlobalGravity * _pickedUpBody.gravityScale;
                 Vector2 s = u * i + a * (0.5f * i * i);
 
                 Vector2 position = (Vector2) (throwOrigin.position) + s;

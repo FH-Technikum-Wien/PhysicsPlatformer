@@ -22,14 +22,25 @@ namespace Physics
         private Type bodyType = Type.Dynamic;
 
         /// <summary>
-        /// The mass of this physics body
+        /// Whether to use the global gravity or a custom one
         /// </summary>
-        [HideInInspector] public float mass = 1.0f;
+        [SerializeField] [Tooltip("Whether to use the global gravity or a custom one")]
+        public bool useCustomGravity;
+
+        /// <summary>
+        /// Custom gravity applied to the body
+        /// </summary>
+        [HideInInspector] public Vector2 customGravity = new Vector2(0.0f, 9.81f);
 
         /// <summary>
         /// Factor applied to the global gravity
         /// </summary>
         [HideInInspector] public float gravityScale = 1.0f;
+
+        /// <summary>
+        /// The mass of this physics body
+        /// </summary>
+        [HideInInspector] public float mass = 1.0f;
 
         /// <summary>
         /// A factor applied to the drag on each axis. Can be used to customise the drag for each axis (not realistic)
@@ -160,8 +171,8 @@ namespace Physics
             _collider2D = GetComponent<Collider2D>();
 
             // Disable/Set rigidbody behaviour 
-            _rb.sharedMaterial = new PhysicsMaterial2D("NoBounce") {bounciness = 0.0f, friction = 1.0f};
             _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            _rb.freezeRotation = true;
 
             if (bodyType == Type.Kinematic)
             {
@@ -273,6 +284,15 @@ namespace Physics
         }
 
         /// <summary>
+        /// Sets the global gravity direction by applying the <see cref="GlobalGravityAcceleration"/> to the given direction.
+        /// </summary>
+        /// <param name="normalizedDirection">The new direction of the gravity.</param>
+        public static void SetGlobalGravityDirection(Vector2 normalizedDirection)
+        {
+            GlobalGravity = normalizedDirection * GlobalGravityAcceleration;
+        }
+
+        /// <summary>
         /// Applies a simple force, using <see cref="Rigidbody2D.AddForce(UnityEngine.Vector2)"/>.
         /// </summary>
         /// <param name="force"></param>
@@ -327,6 +347,12 @@ namespace Physics
             _rb.simulated = setEnabled;
         }
 
+        public void AddMass(float massToAdd)
+        {
+            mass += massToAdd;
+            _rb.mass += massToAdd;
+        }
+
         /// <summary>
         /// Applies drag to the current velocity of the physics body.
         /// The drag factor is in-between 0 and 1.
@@ -364,7 +390,8 @@ namespace Physics
         /// </summary>
         private void ApplyGravity()
         {
-            _rb.velocity -= GlobalGravity * (gravityScale * Time.fixedDeltaTime);
+            // Either apply global gravity or custom gravity
+            _rb.velocity -= (useCustomGravity ? customGravity : GlobalGravity * gravityScale) * Time.fixedDeltaTime;
         }
 
         /// <summary>
