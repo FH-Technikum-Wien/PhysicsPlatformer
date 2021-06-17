@@ -97,6 +97,15 @@ namespace Player
         /// </summary>
         private void Update()
         {
+            // Check if the player wants to jump and can jump
+            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) ||
+                               Input.GetKeyDown(KeyCode.Joystick1Button0)))
+            {
+                isGrounded = false;
+                _pb.ApplyForce(transform.rotation *
+                               new Vector2(0, jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
+            }
+
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 changeGravityAbility.SetGravity(GravityDirection.Left);
@@ -143,15 +152,6 @@ namespace Player
         /// </summary>
         private void FixedUpdate()
         {
-            // Check if the player wants to jump and can jump
-            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) ||
-                               Input.GetKeyDown(KeyCode.Joystick1Button0)))
-            {
-                isGrounded = false;
-                _pb.ApplyForce(transform.rotation *
-                               new Vector2(0, jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
-            }
-
             AddInput();
         }
 
