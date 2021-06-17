@@ -1,9 +1,8 @@
 using Physics;
 using Player;
 using UnityEngine;
-using World.Puzzles;
 
-namespace World
+namespace World.Puzzles
 {
     public class PuzzleManager : MonoBehaviour
     {

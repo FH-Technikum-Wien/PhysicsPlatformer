@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1775450508}
-  startPuzzle: {fileID: 1130403606}
+  startPuzzle: {fileID: 819864774}
   puzzles:
   - {fileID: 819864774}
   - {fileID: 1674922562}
