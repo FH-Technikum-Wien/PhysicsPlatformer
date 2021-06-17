@@ -39,9 +39,10 @@ namespace Player
         [SerializeField] [Tooltip("The ability to turn the world around!")]
         private ChangeGravityAbility changeGravityAbility;
 
-
         [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
         private bool isGrounded;
+
+        public Camera CurrentCamera { get; set; }
 
         private PhysicsBody2D _pb;
         private Vector2 _velocityChange;
@@ -159,7 +160,7 @@ namespace Player
                 _pb.SetVelocity(input * velocityMagnitude);
 
             // Get mouse for looking around
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePosition = CurrentCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 lookDirection = (mousePosition - (Vector2) transform.position);
 
             if (Vector2.SignedAngle(Vector2.up, lookDirection) > 0)

@@ -1,5 +1,6 @@
 using Physics;
 using UnityEngine;
+using World;
 
 namespace Player
 {
@@ -61,12 +62,12 @@ namespace Player
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2.0f, mask);
 
-            foreach (Collider2D collider in colliders)
+            foreach (Collider2D currentCollider in colliders)
             {
-                if (!collider.TryGetComponent(out PhysicsBody2D body))
+                if (!currentCollider.TryGetComponent(out Pickupable pickupable))
                     continue;
 
-                _pickedUpBody = body;
+                _pickedUpBody = pickupable.PhysicsBody2D;
                 _pickedUpBody.gameObject.layer = gameObject.layer;
                 _pickedUpBody.SetEnabled(false);
                 return;

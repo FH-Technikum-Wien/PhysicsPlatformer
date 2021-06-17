@@ -14,6 +14,9 @@ namespace Physics
 
             if (script.BodyType == PhysicsBody2D.Type.Dynamic)
             {
+                script.useCustomGravity = EditorGUILayout.Toggle(new GUIContent("Use Custom Gravity",
+                    "Whether to use the global gravity or a custom one"), script.useCustomGravity);
+
                 if (script.useCustomGravity)
                 {
                     script.customGravity = EditorGUILayout.Vector2Field(new GUIContent("Custom Gravity",

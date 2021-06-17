@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5498643318024331221, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5498643318024331221, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 867454055728060620, guid: 71c691b398d01654ca880521c9548848, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 867454055728060620, guid: 71c691b398d01654ca880521c9548848, type: 3}
       propertyPath: m_LocalPosition.x
@@ -162,7 +162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5132082348255374675, guid: 64b6d2d00fe0f40408157db2c604f32b, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5132082348255374675, guid: 64b6d2d00fe0f40408157db2c604f32b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -215,7 +215,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 370488723851470447, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_Name
-      value: Puzzle_1
+      value: Puzzle_1 Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361591671067974536, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3211231204597076728, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
@@ -273,6 +277,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4006115170396009956, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6045900978964578261, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_Size.y
       value: 19
@@ -292,6 +300,10 @@ PrefabInstance:
     - target: {fileID: 8741185154273892439, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8792099270535388050, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_text
+      value: Gravity 101
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}

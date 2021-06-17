@@ -22,9 +22,15 @@ namespace Physics
         private Type bodyType = Type.Dynamic;
 
         /// <summary>
-        /// Whether to use the global gravity or a custom one
+        /// Whether the rotation of the physics body should be locked.
         /// </summary>
-        [SerializeField] [Tooltip("Whether to use the global gravity or a custom one")]
+        [SerializeField] [Tooltip("Whether the rotation of the physics body should be locked.")]
+        private bool freezeRotation = true;
+
+        /// <summary>
+        /// Whether to use the global gravity or a custom one.
+        /// </summary>
+        [SerializeField] [Tooltip("Whether to use the global gravity or a custom one.")] [HideInInspector]
         public bool useCustomGravity;
 
         /// <summary>
@@ -172,7 +178,9 @@ namespace Physics
 
             // Disable/Set rigidbody behaviour 
             _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-            _rb.freezeRotation = true;
+
+            if (freezeRotation)
+                _rb.freezeRotation = true;
 
             if (bodyType == Type.Kinematic)
             {
@@ -355,7 +363,6 @@ namespace Physics
 
         /// <summary>
         /// Applies drag to the current velocity of the physics body.
-        /// The drag factor is in-between 0 and 1.
         /// <para>
         /// This function also includes moving with other objects, by lerping to <see cref="BaseVelocity"/>.
         /// </para>

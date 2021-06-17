@@ -1,4 +1,5 @@
 using Physics;
+using Player;
 using UnityEngine;
 using World.Puzzles;
 
@@ -6,6 +7,7 @@ namespace World
 {
     public class PuzzleManager : MonoBehaviour
     {
+        [SerializeField] private PlayerController player;
         [SerializeField] private Puzzle startPuzzle;
         [SerializeField] private Puzzle[] puzzles;
 
@@ -24,6 +26,12 @@ namespace World
             _currentPuzzle.PuzzleCamera.enabled = true;
         }
 
+        private void Start()
+        {
+            player.transform.position = _currentPuzzle.PlayerSpawnPoint.position;
+            player.CurrentCamera = _currentPuzzle.PuzzleCamera;
+        }
+
         private void PuzzleOnPlayerEnter(Puzzle puzzle)
         {
             if (_currentPuzzle != null)
@@ -37,6 +45,9 @@ namespace World
             _currentPuzzle.SetEnabled(true);
 
             PhysicsBody2D.SetGlobalGravityDirection(Vector2.up);
+
+            // Update player with new camera
+            player.CurrentCamera = _currentPuzzle.PuzzleCamera;
         }
     }
 }
