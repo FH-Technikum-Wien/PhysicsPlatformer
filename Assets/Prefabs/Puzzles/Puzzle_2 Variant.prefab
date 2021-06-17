@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Puzzle_2 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1361591671067974536, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 3211231204597076728, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -59,6 +63,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4006115170396009956, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6045900978964578261, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_Size.y
       value: 19
@@ -78,6 +86,12 @@ PrefabInstance:
     - target: {fileID: 8741185154273892439, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8792099270535388050, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_text
+      value: 'You can throw stuff
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}

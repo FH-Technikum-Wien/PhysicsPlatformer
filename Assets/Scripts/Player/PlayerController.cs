@@ -4,69 +4,99 @@ using World;
 
 namespace Player
 {
-    /// <summary>
-    /// Linear drag of "20" is pretty good
-    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
+        /// <summary>
+        /// Switches between force and velocity based movement.
+        /// </summary>
         [Header("Movement")] [SerializeField] [Tooltip("Switches between force and velocity based movement")]
         private bool useForceBasedMovement = true;
 
+        /// <summary>
+        /// Magnitude of movement when using force
+        /// </summary>
         [SerializeField] [Tooltip("Magnitude of movement when using force")]
         private float forceMagnitude = 50;
 
+        /// <summary>
+        /// Magnitude of movement when using velocity.
+        /// </summary>
         [SerializeField] [Tooltip("Magnitude of movement when using velocity")]
         private float velocityMagnitude = 20;
 
+        /// <summary>
+        /// The force with which the player jumps.
+        /// </summary>
         [Header("Jumping")] [SerializeField] [Tooltip("The force with which the player jumps")]
         private float jumpForce = 15.0f;
 
+        /// <summary>
+        /// The angle which determines what counts as ground for jumping.
+        /// </summary>
         [SerializeField] [Range(0, 90)] [Tooltip("The angle which determines what counts as ground for jumping")]
         private float groundAngle = 30.0f;
 
+        /// <summary>
+        /// Inner dead zone of the controller.
+        /// </summary>
         [Header("Controller")] [SerializeField] [Tooltip("Inner dead zone of the controller")]
         private float innerDeadZone = 0.1f;
 
+        /// <summary>
+        /// Outer dead zone of the controller.
+        /// </summary>
         [SerializeField] [Tooltip("Outer dead zone of the controller")]
         private float outerDeadZone = 0.9f;
 
+        /// <summary>
+        /// The ability to throw objects.
+        /// </summary>
         [Header("Abilities")] [SerializeField] [Tooltip("The ability to throw objects")]
         private ThrowAbility throwAbility;
 
+        /// <summary>
+        /// How much the player gets slowed when holding something.
+        /// </summary>
         [SerializeField] private float holdingSlownessFactor = 0.5f;
 
-        [SerializeField] [Tooltip("The ability to turn the world around!")]
+        /// <summary>
+        /// The ability to change the gravity.
+        /// </summary>
+        [SerializeField] [Tooltip("The ability to change the gravity")]
         private ChangeGravityAbility changeGravityAbility;
 
+        /// <summary>
+        /// Whether the player is currently grounded
+        /// </summary>
         [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
         private bool isGrounded;
 
+        /// <summary>
+        /// The current camera for the player. Used to determine the mouse position.
+        /// </summary>
         public Camera CurrentCamera { get; set; }
 
-        private PhysicsBody2D _pb;
-        private Vector2 _velocityChange;
+        /// <summary>
+        /// Prevents the player from picking up objects in certain situations (e.g. going to another puzzle).
+        /// </summary>
+        public bool CanPickUpObjects { get; set; } = true;
 
-        private Vector2 _levelStartPosition;
-        private CheckPoint _lastCheckPoint;
+        /// <summary>
+        /// The <see cref="PhysicsBody2D"/> component of the player.
+        /// </summary>
+        private PhysicsBody2D _pb;
 
         private void Awake()
         {
             _pb = GetComponent<PhysicsBody2D>();
-            // Save start position for respawning with no active checkpoint
-            _levelStartPosition = transform.position;
         }
 
+        /// <summary>
+        /// Player input using the old input system.
+        /// </summary>
         private void Update()
         {
-            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) ||
-                               Input.GetKeyDown(KeyCode.Joystick1Button0)))
-            {
-                isGrounded = false;
-                _pb.ApplyForce(transform.rotation *
-                               new Vector2(0, jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
-            }
-
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 changeGravityAbility.SetGravity(GravityDirection.Left);
@@ -87,7 +117,7 @@ namespace Player
                 changeGravityAbility.SetGravity(GravityDirection.Down);
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && CanPickUpObjects)
             {
                 if (throwAbility.IsHolding)
                 {
@@ -108,11 +138,27 @@ namespace Player
             }
         }
 
+        /// <summary>
+        /// Jumping and moving.
+        /// </summary>
         private void FixedUpdate()
         {
+            // Check if the player wants to jump and can jump
+            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) ||
+                               Input.GetKeyDown(KeyCode.Joystick1Button0)))
+            {
+                isGrounded = false;
+                _pb.ApplyForce(transform.rotation *
+                               new Vector2(0, jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
+            }
+
             AddInput();
         }
 
+        /// <summary>
+        /// Checks if the player can jump again (isGrounded check).
+        /// </summary>
+        /// <param name="other"></param>
         private void OnCollisionEnter2D(Collision2D other)
         {
             // Collision Normals to determine if player is grounded
@@ -120,28 +166,18 @@ namespace Player
                 isGrounded = true;
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        /// <summary>
+        /// Drops the currently held object.
+        /// </summary>
+        public void ForceDropPickedUpObject()
         {
-            if (!other.TryGetComponent(out CheckPoint checkPoint))
-                return;
-
-            if (_lastCheckPoint == null || _lastCheckPoint.Index < checkPoint.Index)
-                _lastCheckPoint = checkPoint;
+            if (throwAbility.IsHolding)
+                throwAbility.Drop();
         }
 
-        public void Kill()
-        {
-            changeGravityAbility.SetGravity(GravityDirection.Down);
-            transform.position = _lastCheckPoint != null
-                ? _lastCheckPoint.transform.position
-                : (Vector3) _levelStartPosition;
-        }
-
-        public void AddMass(float massToAdd)
-        {
-            _pb.AddMass(massToAdd);
-        }
-
+        /// <summary>
+        /// Adds the continuous input using the old input system.
+        /// </summary>
         private void AddInput()
         {
             // Get raw input for applying own dead zones
@@ -159,15 +195,16 @@ namespace Player
             else
                 _pb.SetVelocity(input * velocityMagnitude);
 
-            // Get mouse for looking around
+            // Get mouse for aiming
             Vector2 mousePosition = CurrentCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 lookDirection = (mousePosition - (Vector2) transform.position);
 
-            if (Vector2.SignedAngle(Vector2.up, lookDirection) > 0)
-                transform.localScale = new Vector3(-1, 1.5f, 1);
-            else
-                transform.localScale = new Vector3(1, 1.5f, 1);
+            // Turn player if aim is on other side.
+            Vector3 localScale = transform.localScale;
+            localScale.x = Vector2.SignedAngle(Vector2.up, lookDirection) > 0 ? -1 : 1;
+            transform.localScale = localScale;
 
+            // Set the direction for throwing
             throwAbility.SetThrowDirection(lookDirection.normalized);
         }
 
