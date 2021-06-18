@@ -1,5 +1,7 @@
+using Input;
 using Physics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using World;
 
 namespace Player
@@ -30,6 +32,9 @@ namespace Player
         /// </summary>
         [Header("Jumping")] [SerializeField] [Tooltip("The force with which the player jumps")]
         private float jumpForce = 15.0f;
+
+        [SerializeField] [Tooltip("Left stick Y-Value to jump")]
+        private float controllerLeftStickJumpAxisValue = 0.8f;
 
         /// <summary>
         /// The angle which determines what counts as ground for jumping.
@@ -87,72 +92,102 @@ namespace Player
         /// </summary>
         private PhysicsBody2D _pb;
 
+        /// <summary>
+        /// The input actions for the player (Unity's new input system).
+        /// </summary>
+        private PlayerInputAction _inputAction;
+
+        /// <summary>
+        /// The current move direction, set by the input system callback, used in FixedUpdate
+        /// </summary>
+        private Vector2 _moveDirection;
+
+        /// <summary>
+        /// Used for either using mouse to screen or the controllers right stick for aiming.
+        /// </summary>
+        private bool _usingMouse = false;
+
         private void Awake()
         {
             _pb = GetComponent<PhysicsBody2D>();
+            // Subscribe to movement events
+            _inputAction = new PlayerInputAction();
+            _inputAction.Player.Move.performed += ctx => _moveDirection = ctx.ReadValue<Vector2>();
+            // Required to stop player from moving, as performed will not always be called with Vector.zero
+            _inputAction.Player.Move.canceled += _ => { _moveDirection = Vector2.zero; };
+            _inputAction.Player.Jump.performed += _ => Jump();
+            _inputAction.Player.Throw.performed += _ => throwAbility.Throw();
+            _inputAction.Player.PickUp.performed += OnPickUp;
+            _inputAction.Player.GravityUp.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Up);
+            _inputAction.Player.GravityDown.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Down);
+            _inputAction.Player.GravityLeft.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Left);
+            _inputAction.Player.GravityRight.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Right);
+
+            // Get mouse/keyboard control scheme
+            InputControlScheme mouseControlScheme;
+            foreach (InputControlScheme controlScheme in _inputAction.controlSchemes)
+            {
+                if (!controlScheme.SupportsDevice(Mouse.current))
+                    continue;
+
+                mouseControlScheme = controlScheme;
+                break;
+            }
+
+            // Listen to control scheme change
+            GetComponent<PlayerInput>().onControlsChanged += input =>
+                _usingMouse = input.currentControlScheme.Equals(mouseControlScheme.name);
         }
 
-        /// <summary>
-        /// Player input using the old input system.
-        /// </summary>
+        private void OnEnable() => _inputAction.Enable();
+
+        private void OnDisable() => _inputAction.Disable();
+
+        private void OnDestroy() => _inputAction.Dispose();
+
         private void Update()
         {
-            // Check if the player wants to jump and can jump
-            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W) ||
-                               Input.GetKeyDown(KeyCode.Joystick1Button0)))
+            Vector2 lookDirection;
+            // Get mouse for aiming
+            if (_usingMouse)
             {
-                isGrounded = false;
-                _pb.ApplyForce(transform.rotation *
-                               new Vector2(0, jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
+                Vector2 mousePosition = CurrentCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                lookDirection = mousePosition - (Vector2) transform.position;
+            }
+            // Get controller for aiming
+            else
+            {
+                lookDirection = Gamepad.current.rightStick.ReadValue();
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                changeGravityAbility.SetGravity(GravityDirection.Left);
-            }
+            // Turn player if aim is on other side.
+            Vector3 localScale = transform.localScale;
+            localScale.x = Vector2.SignedAngle(Vector2.up, lookDirection) > 0 ? -1 : 1;
+            transform.localScale = localScale;
 
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                changeGravityAbility.SetGravity(GravityDirection.Right);
-            }
-
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                changeGravityAbility.SetGravity(GravityDirection.Up);
-            }
-
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                changeGravityAbility.SetGravity(GravityDirection.Down);
-            }
-
-            if (Input.GetKeyDown(KeyCode.E) && CanPickUpObjects)
-            {
-                if (throwAbility.IsHolding)
-                {
-                    throwAbility.Drop();
-                }
-                else
-                {
-                    throwAbility.PickUp();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                if (throwAbility.IsHolding)
-                {
-                    throwAbility.Throw();
-                }
-            }
+            // Set the direction for throwing
+            throwAbility.SetThrowDirection(lookDirection.normalized);
         }
 
-        /// <summary>
-        /// Jumping and moving.
-        /// </summary>
         private void FixedUpdate()
         {
-            AddInput();
+            // Apply dead zones to last received movement input
+            Vector2 movement = ApplyDeadZones(_moveDirection, innerDeadZone, outerDeadZone);
+
+            // Apply to rigidbody
+            if (useForceBasedMovement)
+            {
+                float force = forceMagnitude * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f);
+                _pb.ApplyForce(new Vector2(movement.x, 0.0f) * force);
+            }
+            else
+            {
+                _pb.SetVelocity(new Vector2(movement.x, 0.0f) * velocityMagnitude);
+            }
+
+            // If player moves up, jump
+            if (isGrounded && movement.y > controllerLeftStickJumpAxisValue)
+                Jump();
         }
 
         /// <summary>
@@ -167,7 +202,7 @@ namespace Player
         }
 
         /// <summary>
-        /// Drops the currently held object.
+        /// Drops the currently held object. Used by the level to prevent the player from taking objects to other puzzles.
         /// </summary>
         public void ForceDropPickedUpObject()
         {
@@ -176,36 +211,30 @@ namespace Player
         }
 
         /// <summary>
-        /// Adds the continuous input using the old input system.
+        /// Picks up a <see cref="Pickupable"/> object close-by.
         /// </summary>
-        private void AddInput()
+        private void OnPickUp(InputAction.CallbackContext obj)
         {
-            // Get raw input for applying own dead zones
-            float inputX = Input.GetAxisRaw("Horizontal");
+            if (!CanPickUpObjects)
+                return;
 
-            // Apply custom dead zones
-            Vector2 input = ApplyDeadZones(new Vector2(inputX, 0), innerDeadZone, outerDeadZone);
-
-            // Transform to correct player space
-            input = transform.rotation * input;
-
-            // Apply to rigidbody
-            if (useForceBasedMovement)
-                _pb.ApplyForce(input * (forceMagnitude * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f)));
+            if (throwAbility.IsHolding)
+                throwAbility.Drop();
             else
-                _pb.SetVelocity(input * velocityMagnitude);
+                throwAbility.PickUp();
+        }
 
-            // Get mouse for aiming
-            Vector2 mousePosition = CurrentCamera.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 lookDirection = (mousePosition - (Vector2) transform.position);
+        /// <summary>
+        /// If grounded, adds jump force to player.
+        /// </summary>
+        private void Jump()
+        {
+            if (!isGrounded)
+                return;
 
-            // Turn player if aim is on other side.
-            Vector3 localScale = transform.localScale;
-            localScale.x = Vector2.SignedAngle(Vector2.up, lookDirection) > 0 ? -1 : 1;
-            transform.localScale = localScale;
-
-            // Set the direction for throwing
-            throwAbility.SetThrowDirection(lookDirection.normalized);
+            isGrounded = false;
+            float force = jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f);
+            _pb.ApplyForce(transform.rotation * new Vector2(0, force));
         }
 
         /// <summary>

@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3293183994769741357}
   - component: {fileID: 3293183994769741347}
   - component: {fileID: 3293183994769741359}
+  - component: {fileID: 7735655753939876584}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -83,6 +84,7 @@ MonoBehaviour:
   forceMagnitude: 50
   velocityMagnitude: 20
   jumpForce: 1000
+  controllerLeftStickJumpAxisValue: 0.7
   groundAngle: 30
   innerDeadZone: 0.1
   outerDeadZone: 0.9
@@ -231,6 +233,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7735655753939876584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3293183994769741358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: a76a3694af41da646b1b2d39ddfa80b3, type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &3293183994873771587
 GameObject:
   m_ObjectHideFlags: 0

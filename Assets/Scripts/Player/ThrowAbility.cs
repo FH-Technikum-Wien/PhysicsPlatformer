@@ -76,6 +76,9 @@ namespace Player
 
         public void Throw()
         {
+            if (!IsHolding)
+                return;
+
             // Disable collision
             _pickedUpBody.Collider2D.isTrigger = true;
 
