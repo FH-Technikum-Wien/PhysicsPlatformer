@@ -105,7 +105,7 @@ namespace Player
         /// <summary>
         /// Used for either using mouse to screen or the controllers right stick for aiming.
         /// </summary>
-        private bool _usingMouse = false;
+        private bool _usingMouse = true;
 
         private void Awake()
         {
@@ -197,7 +197,7 @@ namespace Player
         private void OnCollisionEnter2D(Collision2D other)
         {
             // Collision Normals to determine if player is grounded
-            if (Vector2.Angle(other.contacts[0].normal, transform.rotation * Vector2.up) < groundAngle)
+            if (Vector2.Angle(other.contacts[0].normal, Vector2.up) < groundAngle)
                 isGrounded = true;
         }
 
@@ -234,7 +234,7 @@ namespace Player
 
             isGrounded = false;
             float force = jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f);
-            _pb.ApplyForce(transform.rotation * new Vector2(0, force));
+            _pb.ApplyForce(new Vector2(0, force));
         }
 
         /// <summary>

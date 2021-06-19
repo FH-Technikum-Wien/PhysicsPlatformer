@@ -312,10 +312,17 @@ namespace Physics
         /// <summary>
         /// Adds the given velocity to the internal rigidbody velocity.
         /// </summary>
-        /// <param name="velocity"></param>
         public void AddVelocity(Vector2 velocity)
         {
             _rb.velocity += velocity;
+        }
+
+        /// <summary>
+        /// Sets the position of the physics body.
+        /// </summary>
+        public void SetPosition(Vector2 position)
+        {
+            _rb.MovePosition(position);
         }
 
         /// <summary>
