@@ -362,12 +362,6 @@ namespace Physics
             _rb.simulated = setEnabled;
         }
 
-        public void AddMass(float massToAdd)
-        {
-            mass += massToAdd;
-            _rb.mass += massToAdd;
-        }
-
         /// <summary>
         /// Applies drag to the current velocity of the physics body.
         /// <para>

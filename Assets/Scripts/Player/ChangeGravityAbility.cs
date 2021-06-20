@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using Physics;
 using UnityEngine;
+using UnityEngine.Events;
 using World;
 
 namespace Player
 {
     public class ChangeGravityAbility : MonoBehaviour
     {
+        public static event UnityAction<GravityDirection> OnGravityChange;
+
         private readonly Dictionary<GravityDirection, Vector2> _gravityDirectionToVectorMap =
             new Dictionary<GravityDirection, Vector2>
             {
@@ -24,6 +27,7 @@ namespace Player
         public void SetGravity(GravityDirection gravityDirection)
         {
             PhysicsBody2D.SetGlobalGravityDirection(_gravityDirectionToVectorMap[gravityDirection]);
+            OnGravityChange?.Invoke(gravityDirection);
         }
     }
 }
