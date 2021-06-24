@@ -13,7 +13,11 @@ namespace Physics
         /// </summary>
         public static Vector2 GlobalGravity = new Vector2(0.0f, GlobalGravityAcceleration);
 
-        public enum Type { Dynamic, Kinematic }
+        public enum Type
+        {
+            Dynamic,
+            Kinematic
+        }
 
         /// <summary>
         /// The type of the physics body. Kinematic will be treated with INF mass.
@@ -356,12 +360,29 @@ namespace Physics
             _resetBaseVelocity = true;
         }
 
+        /// <summary>
+        /// Enables/Disables the PhysicsBody behaviour and the activates/deactivates the underlying rigidbody simulation.
+        /// </summary>
+        /// <param name="setEnabled"></param>
         public void SetEnabled(bool setEnabled)
         {
             enabled = setEnabled;
             _rb.simulated = setEnabled;
         }
 
+        public void AddMass(float massToAdd)
+        {
+            mass += massToAdd;
+            _rb.mass += massToAdd;
+        }
+
+
+        public void RemoveMass(float massToRemove)
+        {
+            mass -= massToRemove;
+            _rb.mass -= massToRemove;
+        }
+        
         /// <summary>
         /// Applies drag to the current velocity of the physics body.
         /// <para>

@@ -116,7 +116,7 @@ namespace Player
             // Required to stop player from moving, as performed will not always be called with Vector.zero
             _inputAction.Player.Move.canceled += _ => { _moveDirection = Vector2.zero; };
             _inputAction.Player.Jump.performed += _ => Jump();
-            _inputAction.Player.Throw.performed += _ => throwAbility.Throw();
+            _inputAction.Player.Throw.performed += OnThrow;
             _inputAction.Player.PickUp.performed += OnPickUp;
             _inputAction.Player.GravityUp.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Up);
             _inputAction.Player.GravityDown.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Down);
@@ -148,9 +148,9 @@ namespace Player
         private void Update()
         {
             // Skip if no camera for mouse input
-            if(CurrentCamera == null)
+            if (CurrentCamera == null)
                 return;
-            
+
             Vector2 lookDirection;
             // Get mouse for aiming
             if (_usingMouse)
@@ -181,7 +181,7 @@ namespace Player
             // Apply to rigidbody
             if (useForceBasedMovement)
             {
-                float force = forceMagnitude * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f);
+                float force = forceMagnitude * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f) * _pb.mass;
                 _pb.ApplyForce(new Vector2(movement.x, 0.0f) * force);
             }
             else
@@ -211,7 +211,12 @@ namespace Player
         public void ForceDropPickedUpObject()
         {
             if (throwAbility.IsHolding)
+            {
                 throwAbility.Drop();
+                // Remove mass depending on custom gravity
+                _pb.RemoveMass(throwAbility.PickedUpBodyMass *
+                               (PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y));
+            }
         }
 
         /// <summary>
@@ -223,9 +228,42 @@ namespace Player
                 return;
 
             if (throwAbility.IsHolding)
+            {
                 throwAbility.Drop();
+                if (!throwAbility.IsHolding)
+                {
+                    // Remove mass depending on custom gravity
+                    _pb.RemoveMass(throwAbility.PickedUpBodyMass *
+                                (PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y));
+                    
+                }
+            }
             else
+            {
                 throwAbility.PickUp();
+                if (throwAbility.IsHolding)
+                {
+                    // Add mass from picked up body, depending on custom gravity
+                    _pb.AddMass(throwAbility.PickedUpBodyMass *
+                             (PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y));
+                    
+                }
+            }
+        }
+
+        private void OnThrow(InputAction.CallbackContext obj)
+        {
+            if (!throwAbility.IsHolding)
+                return;
+
+            throwAbility.Throw();
+            if (!throwAbility.IsHolding)
+            {
+                // Remove mass depending on custom gravity
+                _pb.RemoveMass(throwAbility.PickedUpBodyMass *
+                            (PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y));
+                
+            }
         }
 
         /// <summary>
@@ -237,7 +275,7 @@ namespace Player
                 return;
 
             isGrounded = false;
-            float force = jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f);
+            float force = jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f) * _pb.mass;
             _pb.ApplyForce(new Vector2(0, force));
         }
 

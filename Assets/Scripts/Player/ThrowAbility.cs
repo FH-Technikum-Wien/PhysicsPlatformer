@@ -17,7 +17,7 @@ namespace Player
 
         public bool IsHolding => _pickedUpBody != null;
 
-        public float PickedUpBodyMass => _pickedUpBody.mass;
+        public float PickedUpBodyMass { get; private set; }
 
         private PhysicsBody2D _pickedUpBody;
 
@@ -68,6 +68,7 @@ namespace Player
                     continue;
 
                 _pickedUpBody = pickupable.PhysicsBody2D;
+                PickedUpBodyMass = _pickedUpBody.mass;
                 _pickedUpBody.gameObject.layer = gameObject.layer;
                 _pickedUpBody.SetEnabled(false);
                 return;

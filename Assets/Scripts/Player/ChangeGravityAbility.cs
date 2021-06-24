@@ -26,6 +26,7 @@ namespace Player
         /// <param name="gravityDirection">The new direction of the global gravity.</param>
         public void SetGravity(GravityDirection gravityDirection)
         {
+            WorldManager.GravityDirection = gravityDirection;
             PhysicsBody2D.SetGlobalGravityDirection(_gravityDirectionToVectorMap[gravityDirection]);
             OnGravityChange?.Invoke(gravityDirection);
         }
