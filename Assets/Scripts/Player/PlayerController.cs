@@ -147,6 +147,10 @@ namespace Player
 
         private void Update()
         {
+            // Skip if no camera for mouse input
+            if(CurrentCamera == null)
+                return;
+            
             Vector2 lookDirection;
             // Get mouse for aiming
             if (_usingMouse)
