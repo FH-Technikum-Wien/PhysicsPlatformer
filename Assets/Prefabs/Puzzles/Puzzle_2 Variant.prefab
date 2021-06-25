@@ -79,13 +79,21 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7451273142017233439, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_text
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7739131453847811946, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7953270679125436496, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8660284073735022092, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8741185154273892439, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder

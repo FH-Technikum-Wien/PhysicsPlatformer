@@ -79,11 +79,6 @@ namespace Player
         private bool isGrounded;
 
         /// <summary>
-        /// The current camera for the player. Used to determine the mouse position.
-        /// </summary>
-        public Camera CurrentCamera { get; set; }
-
-        /// <summary>
         /// Prevents the player from picking up objects in certain situations (e.g. going to another puzzle).
         /// </summary>
         public bool CanPickUpObjects { get; set; } = true;
@@ -108,8 +103,11 @@ namespace Player
         /// </summary>
         private bool _usingMouse = true;
 
+        private Camera _camera;
+
         private void Awake()
         {
+            _camera = Camera.main;
             _pb = GetComponent<PhysicsBody2D>();
             // Subscribe to movement events
             _inputAction = new PlayerInputAction();
@@ -149,14 +147,14 @@ namespace Player
         private void Update()
         {
             // Skip if no camera for mouse input
-            if (CurrentCamera == null)
+            if (_camera == null)
                 return;
 
             Vector2 lookDirection;
             // Get mouse for aiming
             if (_usingMouse)
             {
-                Vector2 mousePosition = CurrentCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                Vector2 mousePosition = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 lookDirection = mousePosition - (Vector2) transform.position;
             }
             // Get controller for aiming

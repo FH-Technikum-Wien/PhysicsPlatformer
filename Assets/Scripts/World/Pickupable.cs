@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace World
 {
+    /// <summary>
+    /// Small script to tag objects as pickupables.
+    /// </summary>
     [RequireComponent(typeof(PhysicsBody2D))]
     public class Pickupable : MonoBehaviour
     {

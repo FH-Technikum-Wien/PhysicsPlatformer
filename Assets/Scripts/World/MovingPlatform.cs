@@ -93,6 +93,9 @@ namespace World
             }
         }
 
+        /// <summary>
+        /// Add colliding bodies to list of objects to move with the platform
+        /// </summary>
         private void OnCollisionEnter2D(Collision2D other)
         {
             // Only add if its on top
@@ -104,6 +107,10 @@ namespace World
             }
         }
 
+        /// <summary>
+        /// Remove body from list of objects to move with the platform
+        /// </summary>
+        /// <param name="other"></param>
         private void OnCollisionExit2D(Collision2D other)
         {
             if (other.collider.TryGetComponent(out PhysicsBody2D body))

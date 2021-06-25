@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,46 +9,39 @@ namespace World.Puzzles
 {
     public class Puzzle : MonoBehaviour
     {
-        [SerializeField] private Camera puzzleCamera;
+        [SerializeField] private Transform puzzleCameraPosition;
         [SerializeField] private Transform playerSpawnPoint;
-        [SerializeField] private CanvasGroup cbLevelName;
 
-        public Camera PuzzleCamera => puzzleCamera;
+        [SerializeField] [Tooltip("Objects to reset on level reset")]
+        private GameObject[] objectsToReset;
+
+        public Vector3 PuzzleCameraPosition => puzzleCameraPosition.position;
         public Transform PlayerSpawnPoint => playerSpawnPoint;
 
         public event UnityAction<Puzzle> OnPlayerEnter;
 
-        private bool _firstTime = true;
+        private readonly List<Transform> _resetTransforms = new List<Transform>();
+
+        private void Awake()
+        {
+            // Save all positions
+            foreach (GameObject objectToReset in objectsToReset)
+            {
+                _resetTransforms.Add(objectToReset.transform);
+            }
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.TryGetComponent(out PlayerController player))
             {
                 OnPlayerEnter?.Invoke(this);
-                if (_firstTime)
-                {
-                    _firstTime = false;
-                    StartCoroutine(FadeOutLevelName(1.0f, 1.0f));
-                }
-            }
-
-            IEnumerator FadeOutLevelName(float delay, float fadeTime)
-            {
-                yield return new WaitForSeconds(delay);
-
-                float startTime = Time.time;
-                float progress = 0;
-                while (startTime + fadeTime > Time.time)
-                {
-                    cbLevelName.alpha = 1 - progress / fadeTime;
-                    progress += Time.deltaTime;
-                    yield return null;
-                }
-
-                cbLevelName.alpha = 0;
             }
         }
 
+        /// <summary>
+        /// (Dis)Enables all MonoBehaviour scripts in the level tree.
+        /// </summary>
         public void SetEnabled(bool isEnabled)
         {
             foreach (MonoBehaviour behaviour in GetComponentsInChildren<MonoBehaviour>())
@@ -57,6 +52,20 @@ namespace World.Puzzles
             foreach (Rigidbody2D rb in GetComponentsInChildren<Rigidbody2D>())
             {
                 rb.simulated = isEnabled;
+            }
+        }
+
+        /// <summary>
+        /// Resets all defined objects to their start position, rotation and scale.
+        /// </summary>
+        public void ResetObjects()
+        {
+            // Reset all objects to start position
+            for (int i = 0; i < objectsToReset.Length; i++)
+            {
+                objectsToReset[i].transform.position = _resetTransforms[i].position;
+                objectsToReset[i].transform.rotation = _resetTransforms[i].rotation;
+                objectsToReset[i].transform.localScale = _resetTransforms[i].localScale;
             }
         }
     }
