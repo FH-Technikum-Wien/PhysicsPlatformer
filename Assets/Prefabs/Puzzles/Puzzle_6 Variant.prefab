@@ -84,6 +84,10 @@ PrefabInstance:
       propertyPath: mass
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5498643318024331217, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
+      propertyPath: collisionDragEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5498643318024331218, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: m_Name
       value: Box

@@ -1,3 +1,4 @@
+using System;
 using Input;
 using Physics;
 using UnityEngine;
@@ -112,9 +113,9 @@ namespace Player
             _pb = GetComponent<PhysicsBody2D>();
             // Subscribe to movement events
             _inputAction = new PlayerInputAction();
-            _inputAction.Player.Move.performed += ctx => _moveDirection = ctx.ReadValue<Vector2>();
+            _inputAction.Player.Move.performed += OnMove;
             // Required to stop player from moving, as performed will not always be called with Vector.zero
-            _inputAction.Player.Move.canceled += _ => { _moveDirection = Vector2.zero; };
+            _inputAction.Player.Move.canceled += OnMoveCanceled;
             _inputAction.Player.Jump.performed += _ => Jump();
             _inputAction.Player.Throw.performed += OnThrow;
             _inputAction.Player.PickUp.performed += OnPickUp;
@@ -219,6 +220,18 @@ namespace Player
             }
         }
 
+        private void OnMove(InputAction.CallbackContext ctx)
+        {
+            _pb.collisionDragEnabled = false;
+            _moveDirection = ctx.ReadValue<Vector2>();
+        }
+        
+        private void OnMoveCanceled(InputAction.CallbackContext _)
+        {
+            _pb.collisionDragEnabled = true;
+            _moveDirection = Vector2.zero;
+        }
+
         /// <summary>
         /// Picks up a <see cref="Pickupable"/> object close-by.
         /// </summary>
@@ -233,9 +246,7 @@ namespace Player
                 if (!throwAbility.IsHolding)
                 {
                     // Remove mass depending on custom gravity
-                    _pb.RemoveMass(throwAbility.PickedUpBodyMass *
-                                (PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y));
-                    
+                    RemovePickedUpMass();
                 }
             }
             else
@@ -244,9 +255,7 @@ namespace Player
                 if (throwAbility.IsHolding)
                 {
                     // Add mass from picked up body, depending on custom gravity
-                    _pb.AddMass(throwAbility.PickedUpBodyMass *
-                             (PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y));
-                    
+                    AddPickedUpMass();
                 }
             }
         }
@@ -260,9 +269,7 @@ namespace Player
             if (!throwAbility.IsHolding)
             {
                 // Remove mass depending on custom gravity
-                _pb.RemoveMass(throwAbility.PickedUpBodyMass *
-                            (PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y));
-                
+                RemovePickedUpMass();
             }
         }
 
@@ -275,12 +282,31 @@ namespace Player
                 return;
 
             isGrounded = false;
+            _pb.collisionDragEnabled = false;
             float force = jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f) * _pb.mass;
             _pb.ApplyForce(new Vector2(0, force));
         }
 
         /// <summary>
-        /// Applies dead zones on an input-vector. Uses <see cref="Apply(float,float,float)"/> on each axis.
+        /// Adds the mass of the picked up object to the player (respectively to custom gravity).
+        /// </summary>
+        private void AddPickedUpMass()
+        {
+            float gravityNormalized = PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y;
+            _pb.AddMass(throwAbility.PickedUpBodyMass * gravityNormalized);
+        }
+        
+        /// <summary>
+        /// Removes the mass of the picked up object from the player (respectively to custom gravity).
+        /// </summary>
+        private void RemovePickedUpMass()
+        {
+            float gravityNormalized = PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y;
+            _pb.RemoveMass(throwAbility.PickedUpBodyMass * gravityNormalized);
+        }
+
+        /// <summary>
+        /// Applies dead zones on an input-vector.
         /// Also normalizes the input, if necessary.
         /// </summary>
         /// <param name="input">Input as a vector</param>

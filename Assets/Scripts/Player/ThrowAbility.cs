@@ -1,3 +1,4 @@
+using System.Collections;
 using Physics;
 using UnityEngine;
 using World;
@@ -44,8 +45,15 @@ namespace Player
             if (!other.TryGetComponent(out PhysicsBody2D body))
                 return;
 
-            // Enable collision
+            // Enable collision after delay
             body.Collider2D.isTrigger = false;
+            //StartCoroutine(EnableCollisionAfterDelay(body));
+
+            static IEnumerator EnableCollisionAfterDelay(PhysicsBody2D body2D)
+            {
+                yield return new WaitForSeconds(0.5f);
+                body2D.Collider2D.isTrigger = false;
+            }
         }
 
         public void SetThrowFactor(float throwFactor)
@@ -68,6 +76,7 @@ namespace Player
                     continue;
 
                 _pickedUpBody = pickupable.PhysicsBody2D;
+                _pickedUpBody.ResetCollisionFlags();
                 PickedUpBodyMass = _pickedUpBody.mass;
                 _pickedUpBody.gameObject.layer = gameObject.layer;
                 _pickedUpBody.SetEnabled(false);

@@ -128,6 +128,9 @@ MonoBehaviour:
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
+  collisionDragEnabled: 1
+  collisionDrag: 0.5
+  collisionDragWithDynamicsEnabled: 1
   bounciness: 0
   showDebugValues: 0
   currentVelocity: {x: 0, y: 0}
@@ -470,5 +473,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.62861943, y: 0.6768826}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0

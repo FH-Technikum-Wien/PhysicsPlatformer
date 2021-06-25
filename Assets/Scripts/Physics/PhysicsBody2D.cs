@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Util;
 
@@ -83,6 +84,21 @@ namespace Physics
         [HideInInspector] public float quickDrag = 0.05f;
 
         /// <summary>
+        /// If enabled, will add a drag on collision with static objects
+        /// </summary>
+        [HideInInspector] public bool collisionDragEnabled = false;
+
+        /// <summary>
+        /// The amount of collision drag applied to the object when colliding.
+        /// </summary>
+        [HideInInspector] public float collisionDrag = 0.25f;
+        
+        /// <summary>
+        /// If enabled, will add a drag on collision with dynamic objects
+        /// </summary>
+        [HideInInspector] public bool collisionDragWithDynamicsEnabled = false;
+
+        /// <summary>
         /// The bounciness of the physics body. < 0 -> 'Phasing' | 0-1 -> Bounce | > 1 -> Explosion
         /// </summary>
         [HideInInspector] public float bounciness = 1.0f;
@@ -145,6 +161,9 @@ namespace Physics
         /// </summary>
         private Rigidbody2D _rb;
 
+        /// <summary>
+        /// The internal collider2D component
+        /// </summary>
         private Collider2D _collider2D;
 
         /// <summary>
@@ -166,6 +185,16 @@ namespace Physics
         /// The current delay timer for the reset of the base velocity
         /// </summary>
         private float _resetBaseVelocityTime;
+
+        /// <summary>
+        /// Whether this body is currently colliding with a static object (or kinematic PhysicsBody2D)
+        /// </summary>
+        private bool _isCollidingWithStatic;
+        
+        /// <summary>
+        /// Whether this body is currently colliding with a dynamic object
+        /// </summary>
+        private bool _isCollidingWithDynamic;
 
         /// <summary>
         /// The default element density the body is moving through. Should probably always be air
@@ -240,8 +269,21 @@ namespace Physics
                     ApplyDrag();
                     ApplyGravity();
                 }
+
+                // Only apply collision drag if enabled
+                if (collisionDragEnabled)
+                {
+                    // Only apply if collision was with static or dynamic is enabled
+                    if (_isCollidingWithStatic || collisionDragWithDynamicsEnabled && _isCollidingWithDynamic)
+                    {
+                        ApplyCollisionDrag();
+                        _isCollidingWithStatic = false;
+                        _isCollidingWithDynamic = false;
+                    }
+                }
             }
 
+            // After everything is applied, cache last velocity (At collision rb.velocity is zero)
             CachedVelocity = _rb.velocity;
         }
 
@@ -264,6 +306,22 @@ namespace Physics
             else if (body.bodyType == Type.Dynamic)
             {
                 CollisionWithDynamicPhysicsBody(body, collisionNormal);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the body is currently colliding with any static or dynamic objects.
+        /// </summary>
+        /// <param name="other"></param>
+        private void OnCollisionStay2D(Collision2D other)
+        {
+            if (!other.collider.TryGetComponent(out PhysicsBody2D body) || body.bodyType == Type.Kinematic)
+            {
+                _isCollidingWithStatic = true;
+            }
+            else if (body.bodyType == Type.Dynamic)
+            {
+                _isCollidingWithDynamic = true;
             }
         }
 
@@ -370,19 +428,33 @@ namespace Physics
             _rb.simulated = setEnabled;
         }
 
+        /// <summary>
+        /// Adds a mass to the body (also adds it to the internal rigidbody)
+        /// </summary>
         public void AddMass(float massToAdd)
         {
             mass += massToAdd;
             _rb.mass += massToAdd;
         }
 
-
+        /// <summary>
+        /// Removes a mass to the body (also removes it from the internal rigidbody)
+        /// </summary>
         public void RemoveMass(float massToRemove)
         {
             mass -= massToRemove;
             _rb.mass -= massToRemove;
         }
-        
+
+        /// <summary>
+        /// Resets all collision flags
+        /// </summary>
+        public void ResetCollisionFlags()
+        {
+            _isCollidingWithStatic = false;
+            _isCollidingWithDynamic = false;
+        }
+
         /// <summary>
         /// Applies drag to the current velocity of the physics body.
         /// <para>
@@ -411,7 +483,25 @@ namespace Physics
         /// </summary>
         private void ApplyQuickDrag()
         {
-            _rb.velocity *= (1 - quickDrag);
+            _rb.velocity = Vector2.Lerp(_rb.velocity, BaseVelocity, quickDrag);
+        }
+
+        /// <summary>
+        /// Applies the collision drag as quick drag to the velocity.
+        /// </summary>
+        private void ApplyCollisionDrag()
+        {
+            Vector2 velocity = _rb.velocity;
+            // Only apply on non-gravity axis (no drag when falling)
+            if (GlobalGravity.x == 0.0 || useCustomGravity && customGravity.x == 0.0)
+            {
+                velocity.x = Mathf.Lerp(velocity.x, BaseVelocity.x, collisionDrag);
+            }
+            else
+            {
+                velocity.y = Mathf.Lerp(velocity.y, BaseVelocity.y, collisionDrag);
+            }
+            _rb.velocity = velocity;
         }
 
         /// <summary>

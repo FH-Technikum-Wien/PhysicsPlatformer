@@ -337,6 +337,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3561518569920117278}
     m_Modifications:
+    - target: {fileID: 5498643318024331217, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
+      propertyPath: collisionDragEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5498643318024331218, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: m_Name
       value: Box

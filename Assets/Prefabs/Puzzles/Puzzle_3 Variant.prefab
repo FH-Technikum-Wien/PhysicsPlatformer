@@ -133,6 +133,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Puzzle_3 Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 3211231204597076728, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3724023629408989986, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -179,11 +183,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6941144156591643321, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7953270679125436496, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8792099270535388050, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_text
@@ -208,6 +212,10 @@ PrefabInstance:
     - target: {fileID: 5498643318024331217, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: mass
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5498643318024331217, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
+      propertyPath: collisionDragEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5498643318024331218, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: m_Name

@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Util;
 
 namespace Physics
 {
@@ -20,22 +20,24 @@ namespace Physics
         private float omega;
 
         /// <summary>
+        /// Sqrt(4 * omega * omega) -> Defines whether its over-, under- or critical damping.
+        /// </summary>
+        [SerializeField]
+        [ReadOnly]
+        [Tooltip("Sqrt(4 * omega * omega) -> Defines whether its over-, under- or critical damping")]
+        private float sqrt4TimesOmegaSquared;
+
+        /// <summary>
         /// Alternative origin the oscillator returns to.
         /// </summary>
         [SerializeField] [Tooltip("Alternative origin the oscillator returns to")]
         private Vector3 alternativeOrigin;
 
         /// <summary>
-        /// Sqrt(4 * omega * omega) -> Defines whether its over-, under- or critical damping.
-        /// </summary>
-        [SerializeField] [Tooltip("Sqrt(4 * omega * omega) -> Defines whether its over-, under- or critical damping")]
-        private float sqrt4TimesOmegaSquared;
-        
-        /// <summary>
         /// The underlying PhysicsBody2D component.
         /// </summary>
         private PhysicsBody2D _pb;
-        
+
         /// <summary>
         /// The origin the oscillator returns to.
         /// </summary>
@@ -57,6 +59,7 @@ namespace Physics
             _origin = alternativeOrigin == Vector3.zero ? transform.position : alternativeOrigin;
         }
 
+        // Move oscillator back to origin
         private void FixedUpdate()
         {
             sqrt4TimesOmegaSquared = Mathf.Sqrt(4 * omega * omega);

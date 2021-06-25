@@ -53,6 +53,18 @@ namespace Physics
                         "QuickDrag amount. Higher than 1 reverts, lower than 0 accelerates"), script.quickDrag,
                     -1.0f, 2.0f);
 
+                script.collisionDragEnabled = EditorGUILayout.Toggle(new GUIContent("Collision Drag Enabled",
+                    "If enabled, will add a drag on collision with static objects"), script.collisionDragEnabled);
+                script.collisionDrag = EditorGUILayout.FloatField(new GUIContent("Collision Drag",
+                        "The amount of collision drag applied to the object when colliding."),
+                    script.collisionDrag);
+
+                script.collisionDragWithDynamicsEnabled = EditorGUILayout.Toggle(new GUIContent(
+                        "Collision Drag With Dynamics Enabled",
+                        "If enabled, will add a drag on collision with dynamic objects"),
+                    script.collisionDragWithDynamicsEnabled);
+
+
                 EditorGUILayout.Space(10);
 
                 EditorGUILayout.LabelField(new GUIContent("Bounciness",

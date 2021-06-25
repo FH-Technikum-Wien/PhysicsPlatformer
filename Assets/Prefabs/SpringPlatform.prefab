@@ -49,8 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamma: 2
   omega: 2
-  alternativeOrigin: {x: 0, y: 0, z: 0}
   sqrt4TimesOmegaSquared: 4
+  alternativeOrigin: {x: 0, y: 0, z: 0}
 --- !u!114 &4713039126307120677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +75,9 @@ MonoBehaviour:
   frontalArea: 1
   useQuickDrag: 0
   quickDrag: 0.05
+  collisionDragEnabled: 0
+  collisionDrag: 0.25
+  collisionDragWithDynamicsEnabled: 0
   bounciness: 1
   showDebugValues: 0
   currentVelocity: {x: 0, y: 0}
@@ -102,7 +105,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 1
 --- !u!61 &6578413413201883725
 BoxCollider2D:
   m_ObjectHideFlags: 0
