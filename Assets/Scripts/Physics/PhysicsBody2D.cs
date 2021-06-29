@@ -455,6 +455,11 @@ namespace Physics
             _isCollidingWithDynamic = false;
         }
 
+        public void SetConstraints(RigidbodyConstraints2D constraints)
+        {
+            _rb.constraints = constraints;
+        }
+
         /// <summary>
         /// Applies drag to the current velocity of the physics body.
         /// <para>

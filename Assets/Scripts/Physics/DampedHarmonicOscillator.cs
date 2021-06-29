@@ -34,6 +34,16 @@ namespace Physics
         private Vector3 alternativeOrigin;
 
         /// <summary>
+        /// Freeze movement on x-axis.
+        /// </summary>
+        [SerializeField] [Tooltip("Freeze movement on x-axis")]private bool freezeX;
+        
+        /// <summary>
+        /// Freeze movement on y-axis.
+        /// </summary>
+        [SerializeField] [Tooltip("Freeze movement on y-axis")]private bool freezeY;
+
+        /// <summary>
         /// The underlying PhysicsBody2D component.
         /// </summary>
         private PhysicsBody2D _pb;
@@ -57,6 +67,24 @@ namespace Physics
             _pb = GetComponent<PhysicsBody2D>();
             // If alternativeOrigin is defined, use it, otherwise use current
             _origin = alternativeOrigin == Vector3.zero ? transform.position : alternativeOrigin;
+        }
+
+        private void Start()
+        {
+            switch (freezeX)
+            {
+                case true when freezeY:
+                    _pb.SetConstraints(RigidbodyConstraints2D.FreezePosition);
+                    break;
+                case true:
+                    _pb.SetConstraints(RigidbodyConstraints2D.FreezePositionX);
+                    break;
+                default:
+                {
+                    _pb.SetConstraints(freezeY ? RigidbodyConstraints2D.FreezePositionY : RigidbodyConstraints2D.None);
+                    break;
+                }
+            }
         }
 
         // Move oscillator back to origin
