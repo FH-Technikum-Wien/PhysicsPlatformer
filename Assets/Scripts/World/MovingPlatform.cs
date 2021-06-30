@@ -33,10 +33,10 @@ namespace World
         private bool useCos;
 
         /// <summary>
-        /// Objects at this angle are considered to be standing on it and are moved with it.
+        /// Component for moving objects with the platform.
         /// </summary>
-        [SerializeField] [Tooltip("Objects at this angle are considered to be standing on it and are moved with it.")]
-        private float movingWithAngle = 10.0f;
+        [SerializeField] [Tooltip("Component for moving objects with the platform.")]
+        private MovingWith movingWith;
 
         /// <summary>
         /// The underlying <see cref="PhysicsBody2D"/>.
@@ -52,11 +52,6 @@ namespace World
         /// Start position of the platform
         /// </summary>
         private Vector2 _startPosition;
-
-        /// <summary>
-        /// List of all bodies currently standing on the platform.
-        /// </summary>
-        private readonly List<PhysicsBody2D> _bodies = new List<PhysicsBody2D>();
 
         /// <summary>
         /// Internal velocity, used for Euler-Cromer.
@@ -86,38 +81,7 @@ namespace World
             _pb.SetPosition((Vector2) _pb.transform.position + _velocity * Time.fixedDeltaTime);
 
             // Apply current velocity as base velocity and acceleration change to all bodies
-            foreach (PhysicsBody2D body in _bodies)
-            {
-                body.SetBaseVelocity(_velocity);
-                body.AddVelocity(acceleration * Time.fixedDeltaTime);
-            }
-        }
-
-        /// <summary>
-        /// Add colliding bodies to list of objects to move with the platform
-        /// </summary>
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            // Only add if its on top
-            if (other.collider.TryGetComponent(out PhysicsBody2D body) &&
-                Vector2.Angle(-other.contacts[0].normal, Vector2.up) < movingWithAngle)
-            {
-                _bodies.Add(body);
-                body.SetBaseVelocity(_pb.Velocity);
-            }
-        }
-
-        /// <summary>
-        /// Remove body from list of objects to move with the platform
-        /// </summary>
-        /// <param name="other"></param>
-        private void OnCollisionExit2D(Collision2D other)
-        {
-            if (other.collider.TryGetComponent(out PhysicsBody2D body))
-            {
-                _bodies.Remove(body);
-                body.ResetBaseVelocity();
-            }
+            movingWith.ApplyAccelerationAndVelocity(_velocity, acceleration);
         }
     }
 }

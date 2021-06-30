@@ -42,6 +42,11 @@ namespace Physics
         /// Freeze movement on y-axis.
         /// </summary>
         [SerializeField] [Tooltip("Freeze movement on y-axis")]private bool freezeY;
+        
+        /// <summary>
+        /// Freeze rotation on z-axis.
+        /// </summary>
+        [SerializeField] [Tooltip("Freeze rotation on z-axis")]private bool freezeRotation;
 
         /// <summary>
         /// The underlying PhysicsBody2D component.
@@ -71,20 +76,14 @@ namespace Physics
 
         private void Start()
         {
-            switch (freezeX)
-            {
-                case true when freezeY:
-                    _pb.SetConstraints(RigidbodyConstraints2D.FreezePosition);
-                    break;
-                case true:
-                    _pb.SetConstraints(RigidbodyConstraints2D.FreezePositionX);
-                    break;
-                default:
-                {
-                    _pb.SetConstraints(freezeY ? RigidbodyConstraints2D.FreezePositionY : RigidbodyConstraints2D.None);
-                    break;
-                }
-            }
+            if(freezeX)
+                _pb.AddConstraint(RigidbodyConstraints2D.FreezePositionX);
+            
+            if(freezeY)
+                _pb.AddConstraint(RigidbodyConstraints2D.FreezePositionY);
+            
+            if(freezeRotation)
+                _pb.AddConstraint(RigidbodyConstraints2D.FreezeRotation);
         }
 
         // Move oscillator back to origin

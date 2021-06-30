@@ -214,6 +214,18 @@ PrefabInstance:
       propertyPath: requiredGravity
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7356697610106696356, guid: 636d526487f7b834cbfe7d3f54987bc8, type: 3}
+      propertyPath: m_Color.b
+      value: 0.015686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356697610106696356, guid: 636d526487f7b834cbfe7d3f54987bc8, type: 3}
+      propertyPath: m_Color.g
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356697610106696356, guid: 636d526487f7b834cbfe7d3f54987bc8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 636d526487f7b834cbfe7d3f54987bc8, type: 3}
 --- !u!1001 &2417295474425723719

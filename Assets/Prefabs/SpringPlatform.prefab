@@ -53,6 +53,7 @@ MonoBehaviour:
   alternativeOrigin: {x: 0, y: 0, z: 0}
   freezeX: 1
   freezeY: 0
+  freezeRotation: 1
 --- !u!114 &4713039126307120677
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,6 +47,9 @@ TagManager:
   - name: LevelObjects
     uniqueID: 1050531899
     locked: 0
+  - name: LevelStatic
+    uniqueID: 2306570397
+    locked: 0
   - name: Player
     uniqueID: 830110477
     locked: 0

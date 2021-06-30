@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 namespace World
 {
@@ -10,11 +11,13 @@ namespace World
     {
         [SerializeField] private GravityDirection requiredGravity = GravityDirection.Down;
         [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private Light2D spriteLight;
         private Collider2D _collider;
 
         private void OnValidate()
         {
             spriteRenderer.color = WorldManager.GravityDirectionToColor[requiredGravity];
+            spriteLight.color = WorldManager.GravityDirectionToColor[requiredGravity];
         }
 
         private void Awake()
@@ -29,12 +32,12 @@ namespace World
             if (WorldManager.GravityDirection == requiredGravity)
             {
                 _collider.enabled = false;
-                gateColor.a = 0.25f;
+                gateColor.a = 0.2f;
             }
             else
             {
                 _collider.enabled = true;
-                gateColor.a = 0.75f;
+                gateColor.a = 1.0f;
             }
 
             spriteRenderer.color = gateColor;
