@@ -18,6 +18,12 @@ namespace Physics
         /// </summary>
         [SerializeField] [Tooltip("The length of the pendulum")]
         private float length;
+        
+        /// <summary>
+        /// The drag of the pendulum that slows it down.
+        /// </summary>
+        [SerializeField] [Tooltip("The drag of the pendulum that slows it down")]
+        private float drag = 0.2f;
 
         /// <summary>
         /// The line renderer component for drawing the connection to the pivot.
@@ -52,9 +58,6 @@ namespace Physics
         {
             VisualizeConnectionToPivot();
 
-            // Apply gravity
-            _velocity -= PhysicsBody2D.GlobalGravity * Time.fixedDeltaTime;
-
             _displacementVector = pivot.position - transform.position;
             Vector2 tensionDirection = _displacementVector.normalized;
 
@@ -68,18 +71,18 @@ namespace Physics
 
             Vector2 tensionFromWeight = tensionDirection * (PhysicsBody2D.GlobalGravityAcceleration * gravityMagnitudeOpposingTension);
             Vector2 tensionFromCentrifuge = perpendicularVelocity * perpendicularVelocity / _length * tensionDirection;
-
-            Vector2 acceleration = tensionFromCentrifuge + tensionFromWeight;
+            
+            // Apply force from centrifuge, weight and gravity to pendulum
+            Vector2 acceleration = tensionFromCentrifuge + tensionFromWeight - PhysicsBody2D.GlobalGravity;
             _velocity += acceleration * Time.fixedDeltaTime;
             
             // Apply drag
-            _velocity = Vector2.Lerp(_velocity, Vector2.zero, 0.2f * Time.fixedDeltaTime);
+            _velocity = Vector2.Lerp(_velocity, Vector2.zero, drag * Time.fixedDeltaTime);
             
             // Move pendulum
             _pb.SetPosition((Vector2) _pb.transform.position + _velocity * Time.fixedDeltaTime);
             
-            
-            
+            // Apply movement to all objects that should move with the pendulum
             movingWith.ApplyAccelerationAndVelocity(_velocity, acceleration);
         }
 
