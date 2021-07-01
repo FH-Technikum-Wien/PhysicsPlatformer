@@ -38,5 +38,10 @@ namespace World
         {
             GravityDirection = (GravityDirection) (((int) GravityDirection + gravityChange + 4) % 4);
         }
+
+        public static void SetPaused(bool paused)
+        {
+            Time.timeScale = paused ? 0.0f : 1.0f;
+        }
     }
 }

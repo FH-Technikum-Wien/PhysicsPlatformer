@@ -11,7 +11,6 @@ namespace Input
     public class @PlayerInputAction : IInputActionCollection, IDisposable
     {
         public InputActionAsset asset { get; }
-
         public @PlayerInputAction()
         {
             asset = InputActionAsset.FromJson(@"{
@@ -89,6 +88,14 @@ namespace Input
                     ""name"": ""GravityRight"",
                     ""type"": ""Button"",
                     ""id"": ""9f879bc7-45b6-4db7-974a-7ee57b93692c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""4614d4ef-7aad-4f93-9fb5-9df6f35c3706"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -391,6 +398,28 @@ namespace Input
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""504f2413-91c7-4915-b921-e2f78a36e795"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44545332-bb6c-4e8f-b637-56e0d37a2c34"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -439,42 +468,10 @@ namespace Input
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""ScrollWheel"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""44433650-0b31-4778-9452-53f1d3c85a3d"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""MiddleClick"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""cabcfc8f-665e-4d86-95a6-dc7ab613a942"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""RightClick"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""f9266770-dce5-4a22-9d3d-57309d110af8"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""TrackedDevicePosition"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""5c08a928-329b-43f7-84af-39fd642f1cad"",
-                    ""expectedControlType"": ""Vector3"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""TrackedDeviceOrientation"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""26ab11a1-5366-420f-97de-10c6125b3069"",
-                    ""expectedControlType"": ""Quaternion"",
+                    ""name"": ""UnPause"",
+                    ""type"": ""Button"",
+                    ""id"": ""4aa705ab-2a15-4802-a535-6e3a5f8e7eb7"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -845,56 +842,23 @@ namespace Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""38c99815-14ea-4617-8627-164d27641299"",
-                    ""path"": ""<Mouse>/scroll"",
+                    ""id"": ""411a8bfd-3822-454d-8c1b-74c98ba23300"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ScrollWheel"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""UnPause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""24066f69-da47-44f3-a07e-0015fb02eb2e"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""id"": ""6e2ee95c-88ff-4ec1-88c2-f08251931d97"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""MiddleClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4c191405-5738-4d4b-a523-c6a301dbf754"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""RightClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7236c0d9-6ca3-47cf-a6ee-a97f5b59ea77"",
-                    ""path"": ""<XRController>/devicePosition"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""TrackedDevicePosition"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""23e01e3a-f935-4948-8d8b-9bcac77714fb"",
-                    ""path"": ""<XRController>/deviceRotation"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""TrackedDeviceOrientation"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""UnPause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -975,6 +939,7 @@ namespace Input
             m_Player_GravityDown = m_Player.FindAction("GravityDown", throwIfNotFound: true);
             m_Player_GravityLeft = m_Player.FindAction("GravityLeft", throwIfNotFound: true);
             m_Player_GravityRight = m_Player.FindAction("GravityRight", throwIfNotFound: true);
+            m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -982,11 +947,7 @@ namespace Input
             m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
             m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
-            m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
-            m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
-            m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
-            m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
-            m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            m_UI_UnPause = m_UI.FindAction("UnPause", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1045,16 +1006,11 @@ namespace Input
         private readonly InputAction m_Player_GravityDown;
         private readonly InputAction m_Player_GravityLeft;
         private readonly InputAction m_Player_GravityRight;
-
+        private readonly InputAction m_Player_Pause;
         public struct PlayerActions
         {
             private @PlayerInputAction m_Wrapper;
-
-            public PlayerActions(@PlayerInputAction wrapper)
-            {
-                m_Wrapper = wrapper;
-            }
-
+            public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
@@ -1064,29 +1020,12 @@ namespace Input
             public InputAction @GravityDown => m_Wrapper.m_Player_GravityDown;
             public InputAction @GravityLeft => m_Wrapper.m_Player_GravityLeft;
             public InputAction @GravityRight => m_Wrapper.m_Player_GravityRight;
-
-            public InputActionMap Get()
-            {
-                return m_Wrapper.m_Player;
-            }
-
-            public void Enable()
-            {
-                Get().Enable();
-            }
-
-            public void Disable()
-            {
-                Get().Disable();
-            }
-
+            public InputAction @Pause => m_Wrapper.m_Player_Pause;
+            public InputActionMap Get() { return m_Wrapper.m_Player; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-
-            public static implicit operator InputActionMap(PlayerActions set)
-            {
-                return set.Get();
-            }
-
+            public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
             public void SetCallbacks(IPlayerActions instance)
             {
                 if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
@@ -1118,8 +1057,10 @@ namespace Input
                     @GravityRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityRight;
                     @GravityRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityRight;
                     @GravityRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityRight;
+                    @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                    @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                    @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 }
-
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
                 {
@@ -1150,10 +1091,12 @@ namespace Input
                     @GravityRight.started += instance.OnGravityRight;
                     @GravityRight.performed += instance.OnGravityRight;
                     @GravityRight.canceled += instance.OnGravityRight;
+                    @Pause.started += instance.OnPause;
+                    @Pause.performed += instance.OnPause;
+                    @Pause.canceled += instance.OnPause;
                 }
             }
         }
-
         public PlayerActions @Player => new PlayerActions(this);
 
         // UI
@@ -1164,54 +1107,22 @@ namespace Input
         private readonly InputAction m_UI_Cancel;
         private readonly InputAction m_UI_Point;
         private readonly InputAction m_UI_Click;
-        private readonly InputAction m_UI_ScrollWheel;
-        private readonly InputAction m_UI_MiddleClick;
-        private readonly InputAction m_UI_RightClick;
-        private readonly InputAction m_UI_TrackedDevicePosition;
-        private readonly InputAction m_UI_TrackedDeviceOrientation;
-
+        private readonly InputAction m_UI_UnPause;
         public struct UIActions
         {
             private @PlayerInputAction m_Wrapper;
-
-            public UIActions(@PlayerInputAction wrapper)
-            {
-                m_Wrapper = wrapper;
-            }
-
+            public UIActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
             public InputAction @Submit => m_Wrapper.m_UI_Submit;
             public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
             public InputAction @Point => m_Wrapper.m_UI_Point;
             public InputAction @Click => m_Wrapper.m_UI_Click;
-            public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
-            public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
-            public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
-            public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
-            public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
-
-            public InputActionMap Get()
-            {
-                return m_Wrapper.m_UI;
-            }
-
-            public void Enable()
-            {
-                Get().Enable();
-            }
-
-            public void Disable()
-            {
-                Get().Disable();
-            }
-
+            public InputAction @UnPause => m_Wrapper.m_UI_UnPause;
+            public InputActionMap Get() { return m_Wrapper.m_UI; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-
-            public static implicit operator InputActionMap(UIActions set)
-            {
-                return set.Get();
-            }
-
+            public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
             public void SetCallbacks(IUIActions instance)
             {
                 if (m_Wrapper.m_UIActionsCallbackInterface != null)
@@ -1231,26 +1142,10 @@ namespace Input
                     @Click.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
                     @Click.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
                     @Click.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
-                    @ScrollWheel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
-                    @ScrollWheel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
-                    @ScrollWheel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnScrollWheel;
-                    @MiddleClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMiddleClick;
-                    @MiddleClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMiddleClick;
-                    @MiddleClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMiddleClick;
-                    @RightClick.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRightClick;
-                    @RightClick.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRightClick;
-                    @RightClick.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRightClick;
-                    @TrackedDevicePosition.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDevicePosition;
-                    @TrackedDevicePosition.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDevicePosition;
-                    @TrackedDevicePosition.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDevicePosition;
-                    @TrackedDeviceOrientation.started -=
-                        m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
-                    @TrackedDeviceOrientation.performed -=
-                        m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
-                    @TrackedDeviceOrientation.canceled -=
-                        m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
+                    @UnPause.started -= m_Wrapper.m_UIActionsCallbackInterface.OnUnPause;
+                    @UnPause.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnUnPause;
+                    @UnPause.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnUnPause;
                 }
-
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
                 {
@@ -1269,40 +1164,23 @@ namespace Input
                     @Click.started += instance.OnClick;
                     @Click.performed += instance.OnClick;
                     @Click.canceled += instance.OnClick;
-                    @ScrollWheel.started += instance.OnScrollWheel;
-                    @ScrollWheel.performed += instance.OnScrollWheel;
-                    @ScrollWheel.canceled += instance.OnScrollWheel;
-                    @MiddleClick.started += instance.OnMiddleClick;
-                    @MiddleClick.performed += instance.OnMiddleClick;
-                    @MiddleClick.canceled += instance.OnMiddleClick;
-                    @RightClick.started += instance.OnRightClick;
-                    @RightClick.performed += instance.OnRightClick;
-                    @RightClick.canceled += instance.OnRightClick;
-                    @TrackedDevicePosition.started += instance.OnTrackedDevicePosition;
-                    @TrackedDevicePosition.performed += instance.OnTrackedDevicePosition;
-                    @TrackedDevicePosition.canceled += instance.OnTrackedDevicePosition;
-                    @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
-                    @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
-                    @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+                    @UnPause.started += instance.OnUnPause;
+                    @UnPause.performed += instance.OnUnPause;
+                    @UnPause.canceled += instance.OnUnPause;
                 }
             }
         }
-
         public UIActions @UI => new UIActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
-
         public InputControlScheme KeyboardMouseScheme
         {
             get
             {
-                if (m_KeyboardMouseSchemeIndex == -1)
-                    m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard&Mouse");
+                if (m_KeyboardMouseSchemeIndex == -1) m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard&Mouse");
                 return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
             }
         }
-
         private int m_GamepadSchemeIndex = -1;
-
         public InputControlScheme GamepadScheme
         {
             get
@@ -1311,9 +1189,7 @@ namespace Input
                 return asset.controlSchemes[m_GamepadSchemeIndex];
             }
         }
-
         private int m_TouchSchemeIndex = -1;
-
         public InputControlScheme TouchScheme
         {
             get
@@ -1322,9 +1198,7 @@ namespace Input
                 return asset.controlSchemes[m_TouchSchemeIndex];
             }
         }
-
         private int m_JoystickSchemeIndex = -1;
-
         public InputControlScheme JoystickScheme
         {
             get
@@ -1333,9 +1207,7 @@ namespace Input
                 return asset.controlSchemes[m_JoystickSchemeIndex];
             }
         }
-
         private int m_XRSchemeIndex = -1;
-
         public InputControlScheme XRScheme
         {
             get
@@ -1344,7 +1216,6 @@ namespace Input
                 return asset.controlSchemes[m_XRSchemeIndex];
             }
         }
-
         public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
@@ -1356,8 +1227,8 @@ namespace Input
             void OnGravityDown(InputAction.CallbackContext context);
             void OnGravityLeft(InputAction.CallbackContext context);
             void OnGravityRight(InputAction.CallbackContext context);
+            void OnPause(InputAction.CallbackContext context);
         }
-
         public interface IUIActions
         {
             void OnNavigate(InputAction.CallbackContext context);
@@ -1365,11 +1236,7 @@ namespace Input
             void OnCancel(InputAction.CallbackContext context);
             void OnPoint(InputAction.CallbackContext context);
             void OnClick(InputAction.CallbackContext context);
-            void OnScrollWheel(InputAction.CallbackContext context);
-            void OnMiddleClick(InputAction.CallbackContext context);
-            void OnRightClick(InputAction.CallbackContext context);
-            void OnTrackedDevicePosition(InputAction.CallbackContext context);
-            void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+            void OnUnPause(InputAction.CallbackContext context);
         }
     }
 }

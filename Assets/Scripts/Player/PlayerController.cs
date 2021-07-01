@@ -1,6 +1,7 @@
 using System;
 using Input;
 using Physics;
+using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using World;
@@ -73,6 +74,12 @@ namespace Player
         private ChangeGravityAbility changeGravityAbility;
 
         /// <summary>
+        /// The PauseMenu component
+        /// </summary>
+        [Header("Game Interaction")] [SerializeField] [Tooltip("The PauseMenu component")]
+        private PauseMenu pauseMenu;
+
+        /// <summary>
         /// Whether the player is currently grounded
         /// </summary>
         [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
@@ -136,6 +143,11 @@ namespace Player
             // Listen to control scheme change
             GetComponent<PlayerInput>().onControlsChanged += input =>
                 _usingMouse = input.currentControlScheme.Equals(mouseControlScheme.name);
+
+            // Pause menu
+            pauseMenu.OnContinue += OnPauseMenuContinue;
+            _inputAction.Player.Pause.performed += OnPause;
+            _inputAction.UI.UnPause.performed += OnUnPause;
         }
 
         private void OnEnable() => _inputAction.Enable();
@@ -143,6 +155,12 @@ namespace Player
         private void OnDisable() => _inputAction.Disable();
 
         private void OnDestroy() => _inputAction.Dispose();
+
+        private void Start()
+        {
+            // Disable UI input
+            _inputAction.UI.Disable();
+        }
 
         private void Update()
         {
@@ -223,7 +241,7 @@ namespace Player
             _pb.collisionDragEnabled = false;
             _moveDirection = ctx.ReadValue<Vector2>();
         }
-        
+
         private void OnMoveCanceled(InputAction.CallbackContext _)
         {
             _pb.collisionDragEnabled = true;
@@ -284,6 +302,30 @@ namespace Player
             float force = jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f) * _pb.mass;
             _pb.ApplyForce(new Vector2(0, force));
         }
+        
+        /// <summary>
+        /// Re-enables player input and continues the game
+        /// </summary>
+        private void OnUnPause(InputAction.CallbackContext obj)
+        {
+            OnPauseMenuContinue();
+        }
+
+        private void OnPause(InputAction.CallbackContext obj)
+        {
+            _inputAction.UI.Enable();
+            _inputAction.Player.Disable();
+            WorldManager.SetPaused(true);
+            pauseMenu.SetVisibility(true);
+        }
+
+        private void OnPauseMenuContinue()
+        {
+            _inputAction.UI.Disable();
+            _inputAction.Player.Enable();
+            WorldManager.SetPaused(false);
+            pauseMenu.SetVisibility(false);
+        }
 
         /// <summary>
         /// Adds the mass of the picked up object to the player (respectively to custom gravity).
@@ -293,7 +335,7 @@ namespace Player
             float gravityNormalized = PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y;
             _pb.AddMass(throwAbility.PickedUpBodyMass * gravityNormalized);
         }
-        
+
         /// <summary>
         /// Removes the mass of the picked up object from the player (respectively to custom gravity).
         /// </summary>
