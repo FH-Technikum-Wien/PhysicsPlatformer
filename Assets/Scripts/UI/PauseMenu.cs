@@ -59,6 +59,7 @@ namespace UI
         private void OnRestartGameClicked()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            OnContinue?.Invoke();
         }
 
         private void OnQuitClicked()

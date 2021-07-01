@@ -94,6 +94,7 @@ MonoBehaviour:
   holdingSlownessFactor: 0.5
   changeGravityAbility: {fileID: 2216678582236245153}
   pauseMenu: {fileID: 8715639821634974918}
+  playerInput: {fileID: 7735655753939876584}
   isGrounded: 0
 --- !u!114 &2216678582236245153
 MonoBehaviour:

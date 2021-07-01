@@ -20,8 +20,17 @@ namespace UI
 
         private void Awake()
         {
-            ChangeGravityAbility.OnGravityChange += OnGravityChange;
             fadeBackground.alpha = 0.0f;
+        }
+
+        private void OnEnable()
+        {
+            ChangeGravityAbility.OnGravityChange += OnGravityChange;
+        }
+
+        private void OnDisable()
+        {
+            ChangeGravityAbility.OnGravityChange -= OnGravityChange;
         }
 
         private void OnGravityChange(GravityDirection gravityDirection)

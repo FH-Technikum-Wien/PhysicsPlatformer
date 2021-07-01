@@ -1,3 +1,4 @@
+using System;
 using Physics;
 using Player;
 using UnityEngine;
@@ -25,13 +26,18 @@ namespace World.Puzzles
             }
 
             _currentPuzzle = startPuzzle;
-        }
-
-        private void Start()
-        {
+            
             _camera.transform.position = _currentPuzzle.PuzzleCameraPosition;
             player.transform.position = _currentPuzzle.PlayerSpawnPoint.position;
             _player = player;
+        }
+
+        private void OnDestroy()
+        {
+            foreach (Puzzle puzzle in puzzles)
+            {
+                puzzle.OnPlayerEnter -= PuzzleOnPlayerEnter;
+            }
         }
 
         public static void ResetCurrentLevel()

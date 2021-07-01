@@ -478,7 +478,7 @@ GameObject:
   - component: {fileID: 1051058080}
   - component: {fileID: 1051058081}
   m_Layer: 5
-  m_Name: PlayerUI
+  m_Name: GravityUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -637,7 +637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1775450508}
-  startPuzzle: {fileID: 611524100}
+  startPuzzle: {fileID: 819864774}
   puzzles:
   - {fileID: 819864774}
   - {fileID: 1674922562}

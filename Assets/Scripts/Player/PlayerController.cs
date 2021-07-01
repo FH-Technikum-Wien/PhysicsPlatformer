@@ -4,6 +4,7 @@ using Physics;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using World;
 
 namespace Player
@@ -74,13 +75,19 @@ namespace Player
         private ChangeGravityAbility changeGravityAbility;
 
         /// <summary>
-        /// The PauseMenu component
+        /// The PauseMenu component.
         /// </summary>
         [Header("Game Interaction")] [SerializeField] [Tooltip("The PauseMenu component")]
         private PauseMenu pauseMenu;
 
         /// <summary>
-        /// Whether the player is currently grounded
+        /// The PlayerInput component.
+        /// </summary>
+        [SerializeField] [Tooltip("The PlayerInput component")]
+        private PlayerInput playerInput;
+
+        /// <summary>
+        /// Whether the player is currently grounded.
         /// </summary>
         [Header("Debugging")] [SerializeField] [Tooltip("Whether the player is currently grounded")]
         private bool isGrounded;
@@ -112,6 +119,8 @@ namespace Player
 
         private Camera _camera;
 
+        InputControlScheme _mouseControlScheme;
+
         private void Awake()
         {
             _camera = Camera.main;
@@ -130,19 +139,14 @@ namespace Player
             _inputAction.Player.GravityRight.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Right);
 
             // Get mouse/keyboard control scheme
-            InputControlScheme mouseControlScheme;
             foreach (InputControlScheme controlScheme in _inputAction.controlSchemes)
             {
                 if (!controlScheme.SupportsDevice(Mouse.current))
                     continue;
 
-                mouseControlScheme = controlScheme;
+                _mouseControlScheme = controlScheme;
                 break;
             }
-
-            // Listen to control scheme change
-            GetComponent<PlayerInput>().onControlsChanged += input =>
-                _usingMouse = input.currentControlScheme.Equals(mouseControlScheme.name);
 
             // Pause menu
             pauseMenu.OnContinue += OnPauseMenuContinue;
@@ -154,7 +158,11 @@ namespace Player
 
         private void OnDisable() => _inputAction.Disable();
 
-        private void OnDestroy() => _inputAction.Dispose();
+        private void OnDestroy()
+        {
+            _inputAction.Dispose();
+            pauseMenu.OnContinue -= OnPauseMenuContinue;
+        }
 
         private void Start()
         {
@@ -170,7 +178,7 @@ namespace Player
 
             Vector2 lookDirection;
             // Get mouse for aiming
-            if (_usingMouse)
+            if (playerInput.currentControlScheme.Equals(_mouseControlScheme.name))
             {
                 Vector2 mousePosition = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 lookDirection = mousePosition - (Vector2) transform.position;
@@ -302,7 +310,7 @@ namespace Player
             float force = jumpForce * (throwAbility.IsHolding ? holdingSlownessFactor : 1.0f) * _pb.mass;
             _pb.ApplyForce(new Vector2(0, force));
         }
-        
+
         /// <summary>
         /// Re-enables player input and continues the game
         /// </summary>
