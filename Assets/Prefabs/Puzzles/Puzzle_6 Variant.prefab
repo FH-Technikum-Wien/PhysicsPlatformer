@@ -73,6 +73,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60e37d35fcd56f74bbac26f1aafdf527, type: 3}
+--- !u!1 &5647000260440781539 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6578413413201883727, guid: 60e37d35fcd56f74bbac26f1aafdf527, type: 3}
+  m_PrefabInstance: {fileID: 1519143489349894316}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4275580724084275925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138,6 +143,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
+--- !u!1 &8582436975215551751 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5498643318024331218, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
+  m_PrefabInstance: {fileID: 4275580724084275925}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4390338445200216438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -272,6 +282,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60e37d35fcd56f74bbac26f1aafdf527, type: 3}
+--- !u!1 &7328150512660084678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6578413413201883727, guid: 60e37d35fcd56f74bbac26f1aafdf527, type: 3}
+  m_PrefabInstance: {fileID: 4537915615324882313}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6132484748356752002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,6 +354,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -7
       objectReference: {fileID: 0}
+    - target: {fileID: 4249662009892117307, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: objectsToReset.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4249662009892117307, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: objectsToReset.Array.data[0]
+      value: 
+      objectReference: {fileID: 8582436975215551751}
+    - target: {fileID: 4249662009892117307, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: objectsToReset.Array.data[1]
+      value: 
+      objectReference: {fileID: 5647000260440781539}
+    - target: {fileID: 4249662009892117307, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: objectsToReset.Array.data[2]
+      value: 
+      objectReference: {fileID: 7328150512660084678}
     - target: {fileID: 7451273142017233439, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_text
       value: 6

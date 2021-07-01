@@ -86,6 +86,11 @@ namespace Physics
             movingWith.ApplyAccelerationAndVelocity(_velocity, acceleration);
         }
 
+        public void ResetPendulum()
+        {
+            _velocity = Vector2.zero;
+        }
+
         private void VisualizeConnectionToPivot()
         {
             lineRenderer.positionCount = 0;

@@ -1,9 +1,13 @@
 using System;
+using Physics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using World;
+using World.Puzzles;
 
 namespace UI
 {
@@ -48,12 +52,13 @@ namespace UI
 
         private void OnRestartLevelClicked()
         {
-            throw new NotImplementedException();
+            PuzzleManager.ResetCurrentLevel();
+            OnContinue?.Invoke();
         }
 
         private void OnRestartGameClicked()
         {
-            throw new NotImplementedException();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         private void OnQuitClicked()

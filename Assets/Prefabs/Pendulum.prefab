@@ -262,6 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pivot: {fileID: 3539377807818736081}
   length: 0
+  drag: 0.4
   lineRenderer: {fileID: 8562389212425056218}
   movingWith: {fileID: 8347916155281967750}
 --- !u!114 &8347916155281967750

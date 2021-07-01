@@ -295,6 +295,9 @@ namespace Physics
             // Skip if kinematic
             if (bodyType == Type.Kinematic)
                 return;
+            
+            // Reset baseVelocity on any collision
+            BaseVelocity = Vector2.zero;
 
             Vector2 collisionNormal = other.contacts[0].normal;
 
@@ -463,6 +466,14 @@ namespace Physics
         public void AddConstraint(RigidbodyConstraints2D constraint)
         {
             _rb.constraints |= constraint;
+        }
+
+        public void ResetBody()
+        {
+            ResetCollisionFlags();
+            BaseVelocity = Vector2.zero;
+            CachedVelocity = Vector2.zero;
+            _rb.velocity = Vector2.zero;
         }
 
         /// <summary>

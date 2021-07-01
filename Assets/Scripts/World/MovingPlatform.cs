@@ -83,5 +83,10 @@ namespace World
             // Apply current velocity as base velocity and acceleration change to all bodies
             movingWith.ApplyAccelerationAndVelocity(_velocity, acceleration);
         }
+
+        public void ResetPlatform()
+        {
+            _time = 0;
+        }
     }
 }

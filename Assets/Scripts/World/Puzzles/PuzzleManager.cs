@@ -10,8 +10,10 @@ namespace World.Puzzles
         [SerializeField] private Puzzle startPuzzle;
         [SerializeField] private Puzzle[] puzzles;
 
-        private Puzzle _currentPuzzle;
+        private static Puzzle _currentPuzzle;
         private Camera _camera;
+
+        private static PlayerController _player;
 
         private void Awake()
         {
@@ -29,6 +31,15 @@ namespace World.Puzzles
         {
             _camera.transform.position = _currentPuzzle.PuzzleCameraPosition;
             player.transform.position = _currentPuzzle.PlayerSpawnPoint.position;
+            _player = player;
+        }
+
+        public static void ResetCurrentLevel()
+        {
+            _currentPuzzle.ResetObjects();
+            PhysicsBody2D.SetGlobalGravityDirection(Vector2.up);
+            WorldManager.GravityDirection = GravityDirection.Down;
+            _player.transform.position = _currentPuzzle.PlayerSpawnPoint.position;
         }
 
         private void PuzzleOnPlayerEnter(Puzzle puzzle)
@@ -43,6 +54,7 @@ namespace World.Puzzles
             _currentPuzzle.SetEnabled(true);
 
             PhysicsBody2D.SetGlobalGravityDirection(Vector2.up);
+            WorldManager.GravityDirection = GravityDirection.Down;
         }
     }
 }

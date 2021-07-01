@@ -23,7 +23,7 @@ namespace World
         {
             plateToPushDown.transform.localPosition =
                 Vector3.Lerp(_plateLocalStartPosition, platePressedLocalPosition, _animationTime / platePressTime);
-            _animationTime += plateToPushDown.Bodies.Count > 0 ? Time.deltaTime : -Time.deltaTime;
+            _animationTime += plateToPushDown.bodies.Count > 0 ? Time.deltaTime : -Time.deltaTime;
 
             _animationTime = Mathf.Clamp(_animationTime, 0, platePressTime);
 
@@ -35,6 +35,12 @@ namespace World
             {
                 doorToOpen.Close();
             }
+        }
+
+        public void ResetPressurePlate()
+        {
+            _animationTime = 0;
+            plateToPushDown.bodies.Clear();
         }
     }
 }

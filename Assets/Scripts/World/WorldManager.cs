@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 namespace World
@@ -24,7 +25,7 @@ namespace World
                 {GravityDirection.Right, Color.green},
                 {GravityDirection.Up, Color.yellow},
             };
-        
+
         public static readonly Dictionary<GravityDirection, Vector2> GravityDirectionToVector =
             new Dictionary<GravityDirection, Vector2>
             {
@@ -33,11 +34,6 @@ namespace World
                 {GravityDirection.Right, Vector2.right},
                 {GravityDirection.Up, Vector2.up},
             };
-
-        public static void ChangeGravityDirection(int gravityChange)
-        {
-            GravityDirection = (GravityDirection) (((int) GravityDirection + gravityChange + 4) % 4);
-        }
 
         public static void SetPaused(bool paused)
         {

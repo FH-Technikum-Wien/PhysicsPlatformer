@@ -7,9 +7,6 @@ namespace World
         [SerializeField] private float timeToOpen;
         [SerializeField] private Vector3 openMovement;
 
-        [Header("Debugging")] [SerializeField] private bool open;
-        [Header("Debugging")] [SerializeField] private bool close;
-
         public bool IsOpen { get; private set; }
         public bool IsOpening { get; private set; }
         public bool IsAnimating { get; private set; }
@@ -24,18 +21,6 @@ namespace World
 
         private void Update()
         {
-            if (open)
-            {
-                open = false;
-                Open();
-            }
-
-            if (close)
-            {
-                close = false;
-                Close();
-            }
-
             if (IsAnimating)
             {
                 transform.position = Vector3.Lerp(_closePosition, _closePosition + openMovement, _animationTime);
@@ -68,6 +53,13 @@ namespace World
         {
             IsOpening = false;
             IsAnimating = true;
+        }
+
+        public void CloseInstant()
+        {
+            _animationTime = 0;
+            IsOpening = false;
+            IsAnimating = false;
         }
     }
 }

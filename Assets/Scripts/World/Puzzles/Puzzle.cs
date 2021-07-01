@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Physics;
 using Player;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,14 +21,14 @@ namespace World.Puzzles
 
         public event UnityAction<Puzzle> OnPlayerEnter;
 
-        private readonly List<Transform> _resetTransforms = new List<Transform>();
+        private readonly List<Vector3> _resetPositions = new List<Vector3>();
 
-        private void Awake()
+        private void Start()
         {
             // Save all positions
             foreach (GameObject objectToReset in objectsToReset)
             {
-                _resetTransforms.Add(objectToReset.transform);
+                _resetPositions.Add(objectToReset.transform.position);
             }
         }
 
@@ -63,9 +64,32 @@ namespace World.Puzzles
             // Reset all objects to start position
             for (int i = 0; i < objectsToReset.Length; i++)
             {
-                objectsToReset[i].transform.position = _resetTransforms[i].position;
-                objectsToReset[i].transform.rotation = _resetTransforms[i].rotation;
-                objectsToReset[i].transform.localScale = _resetTransforms[i].localScale;
+                objectsToReset[i].transform.position = _resetPositions[i];
+
+                if (objectsToReset[i].TryGetComponent(out PhysicsBody2D body))
+                {
+                    body.ResetBody();
+                }
+                
+                if (objectsToReset[i].TryGetComponent(out PressurePlate plate))
+                {
+                    plate.ResetPressurePlate();
+                }
+                
+                if (objectsToReset[i].TryGetComponent(out Door door))
+                {
+                    door.CloseInstant();
+                }
+
+                if (objectsToReset[i].TryGetComponent(out MovingPlatform platform))
+                {
+                    platform.ResetPlatform();
+                }
+                
+                if (objectsToReset[i].TryGetComponent(out Pendulum pendulum))
+                {
+                    pendulum.ResetPendulum();
+                }
             }
         }
     }
