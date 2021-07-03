@@ -1,7 +1,5 @@
-using System.Collections;
 using Physics;
 using UnityEngine;
-using Util;
 using World;
 
 namespace Player
@@ -26,7 +24,7 @@ namespace Player
         /// <summary>
         /// The direction of the throw.
         /// </summary>
-        [SerializeField] [ReadOnly] private Vector2 throwDirection;
+        [SerializeField] private Vector2 throwDirection;
 
         /// <summary>
         /// The strength of the throw. Defines the distance the object can be thrown.

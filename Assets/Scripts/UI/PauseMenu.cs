@@ -23,6 +23,8 @@ namespace UI
 
         public event UnityAction OnContinue;
 
+        private bool _continueWasSelected;
+
         private void OnEnable()
         {
             btnContinue.onClick.AddListener(OnContinueClicked);
@@ -47,16 +49,17 @@ namespace UI
             // If no button is selected, select start
             if (!playerController.IsUsingMouse)
             {
-                if (btnContinue.gameObject != EventSystem.current.currentSelectedGameObject &&
-                    btnQuit.gameObject != EventSystem.current.currentSelectedGameObject)
+                if (!_continueWasSelected)
                 {
                     EventSystem.current.SetSelectedGameObject(btnContinue.gameObject);
+                    _continueWasSelected = true;
                 }
             }
             else
             {
                 // Deselect all
                 EventSystem.current.SetSelectedGameObject(null);
+                _continueWasSelected = false;
             }
         }
 

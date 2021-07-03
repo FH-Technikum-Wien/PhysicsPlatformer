@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using Util;
 
 namespace Physics
 {
@@ -23,7 +21,6 @@ namespace Physics
         /// Sqrt(4 * omega * omega) -> Defines whether its over-, under- or critical damping.
         /// </summary>
         [SerializeField]
-        [ReadOnly]
         [Tooltip("Sqrt(4 * omega * omega) -> Defines whether its over-, under- or critical damping")]
         private float sqrt4TimesOmegaSquared;
 

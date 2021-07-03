@@ -210,6 +210,30 @@ PrefabInstance:
       propertyPath: objectsToReset.Array.data[2]
       value: 
       objectReference: {fileID: 8144726469212551296}
+    - target: {fileID: 4977242513617056548, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977242513617056548, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977242513617056548, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977242513617056548, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977242513617056548, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977242513617056548, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6941144156591643321, guid: 71c103c2231721a4c86d0e2e38015c77, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -248,7 +272,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5498643318024331217, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: mass
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5498643318024331217, guid: 39c482a37c1d36f45ac3524b8141fac0, type: 3}
       propertyPath: collisionDragEnabled
