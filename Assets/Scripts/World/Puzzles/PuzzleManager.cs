@@ -32,6 +32,12 @@ namespace World.Puzzles
             _player = player;
         }
 
+        private void Start()
+        {
+            _player.InputAction.PlayerMainMenu.Disable();
+            _player.InputAction.Player.Enable();
+        }
+
         private void OnDestroy()
         {
             foreach (Puzzle puzzle in puzzles)

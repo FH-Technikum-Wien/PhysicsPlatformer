@@ -1,10 +1,8 @@
-using System;
 using Input;
 using Physics;
 using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Users;
 using World;
 
 namespace Player
@@ -98,24 +96,24 @@ namespace Player
         public bool CanPickUpObjects { get; set; } = true;
 
         /// <summary>
+        /// Whether the player is currently using the mouse and keyboard or a controller.
+        /// </summary>
+        public bool IsUsingMouse { get; private set; }
+        
+        /// <summary>
+        /// The input actions for the player (Unity's new input system).
+        /// </summary>
+        public PlayerInputAction InputAction { get; private set; }
+        
+        /// <summary>
         /// The <see cref="PhysicsBody2D"/> component of the player.
         /// </summary>
         private PhysicsBody2D _pb;
 
         /// <summary>
-        /// The input actions for the player (Unity's new input system).
-        /// </summary>
-        private PlayerInputAction _inputAction;
-
-        /// <summary>
         /// The current move direction, set by the input system callback, used in FixedUpdate
         /// </summary>
         private Vector2 _moveDirection;
-
-        /// <summary>
-        /// Used for either using mouse to screen or the controllers right stick for aiming.
-        /// </summary>
-        private bool _usingMouse = true;
 
         private Camera _camera;
 
@@ -126,20 +124,25 @@ namespace Player
             _camera = Camera.main;
             _pb = GetComponent<PhysicsBody2D>();
             // Subscribe to movement events
-            _inputAction = new PlayerInputAction();
-            _inputAction.Player.Move.performed += OnMove;
+            InputAction = new PlayerInputAction();
+            InputAction.Player.Move.performed += OnMove;
             // Required to stop player from moving, as performed will not always be called with Vector.zero
-            _inputAction.Player.Move.canceled += OnMoveCanceled;
-            _inputAction.Player.Jump.performed += _ => Jump();
-            _inputAction.Player.Throw.performed += OnThrow;
-            _inputAction.Player.PickUp.performed += OnPickUp;
-            _inputAction.Player.GravityUp.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Up);
-            _inputAction.Player.GravityDown.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Down);
-            _inputAction.Player.GravityLeft.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Left);
-            _inputAction.Player.GravityRight.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Right);
+            InputAction.Player.Move.canceled += OnMoveCanceled;
+            InputAction.Player.Jump.performed += _ => Jump();
+            InputAction.Player.Throw.performed += OnThrow;
+            InputAction.Player.PickUp.performed += OnPickUp;
+            InputAction.Player.GravityUp.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Up);
+            InputAction.Player.GravityDown.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Down);
+            InputAction.Player.GravityLeft.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Left);
+            InputAction.Player.GravityRight.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Right);
+            
+            InputAction.PlayerMainMenu.GravityUp.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Up);
+            InputAction.PlayerMainMenu.GravityDown.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Down);
+            InputAction.PlayerMainMenu.GravityLeft.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Left);
+            InputAction.PlayerMainMenu.GravityRight.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Right);
 
             // Get mouse/keyboard control scheme
-            foreach (InputControlScheme controlScheme in _inputAction.controlSchemes)
+            foreach (InputControlScheme controlScheme in InputAction.controlSchemes)
             {
                 if (!controlScheme.SupportsDevice(Mouse.current))
                     continue;
@@ -149,25 +152,27 @@ namespace Player
             }
 
             // Pause menu
-            pauseMenu.OnContinue += OnPauseMenuContinue;
-            _inputAction.Player.Pause.performed += OnPause;
-            _inputAction.UI.UnPause.performed += OnUnPause;
+            if (pauseMenu != null)
+                pauseMenu.OnContinue += OnPauseMenuContinue;
+            InputAction.Player.Pause.performed += OnPause;
+            InputAction.UI.UnPause.performed += OnUnPause;
         }
 
-        private void OnEnable() => _inputAction.Enable();
+        private void OnEnable() => InputAction.Player.Enable();
 
-        private void OnDisable() => _inputAction.Disable();
+        private void OnDisable() => InputAction.Disable();
 
         private void OnDestroy()
         {
-            _inputAction.Dispose();
-            pauseMenu.OnContinue -= OnPauseMenuContinue;
+            InputAction.Dispose();
+            if (pauseMenu != null)
+                pauseMenu.OnContinue -= OnPauseMenuContinue;
         }
 
         private void Start()
         {
             // Disable UI input
-            _inputAction.UI.Disable();
+            InputAction.UI.Disable();
         }
 
         private void Update()
@@ -176,9 +181,11 @@ namespace Player
             if (_camera == null)
                 return;
 
+            IsUsingMouse = playerInput.currentControlScheme.Equals(_mouseControlScheme.name);
+
             Vector2 lookDirection;
             // Get mouse for aiming
-            if (playerInput.currentControlScheme.Equals(_mouseControlScheme.name))
+            if (IsUsingMouse)
             {
                 Vector2 mousePosition = _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 lookDirection = mousePosition - (Vector2) transform.position;
@@ -321,16 +328,16 @@ namespace Player
 
         private void OnPause(InputAction.CallbackContext obj)
         {
-            _inputAction.UI.Enable();
-            _inputAction.Player.Disable();
+            InputAction.UI.Enable();
+            InputAction.Player.Disable();
             WorldManager.SetPaused(true);
             pauseMenu.SetVisibility(true);
         }
 
         private void OnPauseMenuContinue()
         {
-            _inputAction.UI.Disable();
-            _inputAction.Player.Enable();
+            InputAction.UI.Disable();
+            InputAction.Player.Enable();
             WorldManager.SetPaused(false);
             pauseMenu.SetVisibility(false);
         }
@@ -342,6 +349,7 @@ namespace Player
         {
             float gravityNormalized = PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y;
             _pb.AddMass(throwAbility.PickedUpBodyMass * gravityNormalized);
+            _pb.dragAxisFactor.x += throwAbility.PickedUpBodyMass;
         }
 
         /// <summary>
@@ -351,6 +359,7 @@ namespace Player
         {
             float gravityNormalized = PhysicsBody2D.GlobalGravityAcceleration / _pb.customGravity.y;
             _pb.RemoveMass(throwAbility.PickedUpBodyMass * gravityNormalized);
+            _pb.dragAxisFactor.x -= throwAbility.PickedUpBodyMass;
         }
 
         /// <summary>

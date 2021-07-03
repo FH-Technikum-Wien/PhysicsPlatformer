@@ -71,7 +71,7 @@ namespace Physics
         {
             _pb = GetComponent<PhysicsBody2D>();
             // If alternativeOrigin is defined, use it, otherwise use current
-            _origin = alternativeOrigin == Vector3.zero ? transform.position : alternativeOrigin;
+            _origin = alternativeOrigin == Vector3.zero ? transform.localPosition : alternativeOrigin;
         }
 
         private void Start()
@@ -92,7 +92,7 @@ namespace Physics
             sqrt4TimesOmegaSquared = Mathf.Sqrt(4 * omega * omega);
             float b = gamma * _pb.mass;
             float k = omega * omega * _pb.mass;
-            Vector2 difference = _origin - transform.position;
+            Vector2 difference = _origin - transform.localPosition;
 
             _pb.ApplyForce(difference * k - b * _pb.CachedVelocity);
         }

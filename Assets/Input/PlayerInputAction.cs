@@ -577,72 +577,6 @@ namespace Input
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""fb8277d4-c5cd-4663-9dc7-ee3f0b506d90"",
-                    ""path"": ""<Gamepad>/dpad"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Joystick"",
-                    ""id"": ""e25d9774-381c-4a61-b47c-7b6b299ad9f9"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""3db53b26-6601-41be-9887-63ac74e79d19"",
-                    ""path"": ""<Joystick>/stick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""0cb3e13e-3d90-4178-8ae6-d9c5501d653f"",
-                    ""path"": ""<Joystick>/stick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""0392d399-f6dd-4c82-8062-c1e9c0d34835"",
-                    ""path"": ""<Joystick>/stick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""942a66d9-d42f-43d6-8d70-ecb4ba5363bc"",
-                    ""path"": ""<Joystick>/stick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""Keyboard"",
                     ""id"": ""ff527021-f211-4c02-933e-5976594c46ed"",
                     ""path"": ""2DVector"",
@@ -743,8 +677,30 @@ namespace Input
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9e92bb26-7e3b-4ec4-b06b-3c8f8e498ddc"",
-                    ""path"": ""*/{Submit}"",
+                    ""id"": ""77452e3e-c39f-4b7f-a580-0f416ac15b3b"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""609df6b1-e39d-4e4d-adaa-0d08e9ea9036"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7ff3c61-cd0c-45f4-994f-c93bee884078"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -863,6 +819,134 @@ namespace Input
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerMainMenu"",
+            ""id"": ""1572e708-be61-4333-9cf2-1bb69cc9f518"",
+            ""actions"": [
+                {
+                    ""name"": ""GravityRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""39db3618-6712-4cae-96c5-fd7ce07e8f32"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""GravityLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""c48631c3-bb65-4dd6-b6dd-581ba345e0c8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""GravityDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""4854aeba-9ad3-4bab-8dd2-0ccea00d222d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""GravityUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""eafa2643-5205-4eda-98d6-140d729a59d9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""03075c74-aa71-4c82-ae33-ad455db710a1"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GravityUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e8df3b2-166f-43d1-86c8-050948907904"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GravityUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d4e97c5-895e-4dfc-b053-43f5c655c584"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GravityDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba3901f7-72a1-442c-956e-6558e66ae9b7"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GravityDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76a63425-d74c-4ec8-acba-509566228309"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GravityLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b59faffe-fda7-4095-b06e-68e3be0da5fc"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GravityLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""025486da-9af2-472e-8380-4e0d1ebea5be"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""GravityRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2765d371-af69-4d84-897f-b2722db5d42d"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GravityRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -948,6 +1032,12 @@ namespace Input
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
             m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
             m_UI_UnPause = m_UI.FindAction("UnPause", throwIfNotFound: true);
+            // PlayerMainMenu
+            m_PlayerMainMenu = asset.FindActionMap("PlayerMainMenu", throwIfNotFound: true);
+            m_PlayerMainMenu_GravityRight = m_PlayerMainMenu.FindAction("GravityRight", throwIfNotFound: true);
+            m_PlayerMainMenu_GravityLeft = m_PlayerMainMenu.FindAction("GravityLeft", throwIfNotFound: true);
+            m_PlayerMainMenu_GravityDown = m_PlayerMainMenu.FindAction("GravityDown", throwIfNotFound: true);
+            m_PlayerMainMenu_GravityUp = m_PlayerMainMenu.FindAction("GravityUp", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1171,6 +1261,63 @@ namespace Input
             }
         }
         public UIActions @UI => new UIActions(this);
+
+        // PlayerMainMenu
+        private readonly InputActionMap m_PlayerMainMenu;
+        private IPlayerMainMenuActions m_PlayerMainMenuActionsCallbackInterface;
+        private readonly InputAction m_PlayerMainMenu_GravityRight;
+        private readonly InputAction m_PlayerMainMenu_GravityLeft;
+        private readonly InputAction m_PlayerMainMenu_GravityDown;
+        private readonly InputAction m_PlayerMainMenu_GravityUp;
+        public struct PlayerMainMenuActions
+        {
+            private @PlayerInputAction m_Wrapper;
+            public PlayerMainMenuActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
+            public InputAction @GravityRight => m_Wrapper.m_PlayerMainMenu_GravityRight;
+            public InputAction @GravityLeft => m_Wrapper.m_PlayerMainMenu_GravityLeft;
+            public InputAction @GravityDown => m_Wrapper.m_PlayerMainMenu_GravityDown;
+            public InputAction @GravityUp => m_Wrapper.m_PlayerMainMenu_GravityUp;
+            public InputActionMap Get() { return m_Wrapper.m_PlayerMainMenu; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PlayerMainMenuActions set) { return set.Get(); }
+            public void SetCallbacks(IPlayerMainMenuActions instance)
+            {
+                if (m_Wrapper.m_PlayerMainMenuActionsCallbackInterface != null)
+                {
+                    @GravityRight.started -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityRight;
+                    @GravityRight.performed -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityRight;
+                    @GravityRight.canceled -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityRight;
+                    @GravityLeft.started -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityLeft;
+                    @GravityLeft.performed -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityLeft;
+                    @GravityLeft.canceled -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityLeft;
+                    @GravityDown.started -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityDown;
+                    @GravityDown.performed -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityDown;
+                    @GravityDown.canceled -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityDown;
+                    @GravityUp.started -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityUp;
+                    @GravityUp.performed -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityUp;
+                    @GravityUp.canceled -= m_Wrapper.m_PlayerMainMenuActionsCallbackInterface.OnGravityUp;
+                }
+                m_Wrapper.m_PlayerMainMenuActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @GravityRight.started += instance.OnGravityRight;
+                    @GravityRight.performed += instance.OnGravityRight;
+                    @GravityRight.canceled += instance.OnGravityRight;
+                    @GravityLeft.started += instance.OnGravityLeft;
+                    @GravityLeft.performed += instance.OnGravityLeft;
+                    @GravityLeft.canceled += instance.OnGravityLeft;
+                    @GravityDown.started += instance.OnGravityDown;
+                    @GravityDown.performed += instance.OnGravityDown;
+                    @GravityDown.canceled += instance.OnGravityDown;
+                    @GravityUp.started += instance.OnGravityUp;
+                    @GravityUp.performed += instance.OnGravityUp;
+                    @GravityUp.canceled += instance.OnGravityUp;
+                }
+            }
+        }
+        public PlayerMainMenuActions @PlayerMainMenu => new PlayerMainMenuActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1237,6 +1384,13 @@ namespace Input
             void OnPoint(InputAction.CallbackContext context);
             void OnClick(InputAction.CallbackContext context);
             void OnUnPause(InputAction.CallbackContext context);
+        }
+        public interface IPlayerMainMenuActions
+        {
+            void OnGravityRight(InputAction.CallbackContext context);
+            void OnGravityLeft(InputAction.CallbackContext context);
+            void OnGravityDown(InputAction.CallbackContext context);
+            void OnGravityUp(InputAction.CallbackContext context);
         }
     }
 }

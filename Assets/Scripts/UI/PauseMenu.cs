@@ -1,5 +1,6 @@
 using System;
 using Physics;
+using Player;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,7 @@ namespace UI
         [SerializeField] private Button btnRestartGame;
         [SerializeField] private Button btnQuit;
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private PlayerController playerController;
 
         public event UnityAction OnContinue;
 
@@ -37,12 +39,31 @@ namespace UI
             btnQuit.onClick.RemoveListener(OnQuitClicked);
         }
 
+        private void Update()
+        {
+            if(!canvasGroup.interactable)
+                return;
+            
+            // If no button is selected, select start
+            if (!playerController.IsUsingMouse)
+            {
+                if (btnContinue.gameObject != EventSystem.current.currentSelectedGameObject &&
+                    btnQuit.gameObject != EventSystem.current.currentSelectedGameObject)
+                {
+                    EventSystem.current.SetSelectedGameObject(btnContinue.gameObject);
+                }
+            }
+            else
+            {
+                // Deselect all
+                EventSystem.current.SetSelectedGameObject(null);
+            }
+        }
+
         public void SetVisibility(bool isVisible)
         {
             canvasGroup.alpha = isVisible ? 1.0f : 0.0f;
             canvasGroup.interactable = isVisible;
-            if (isVisible)
-                EventSystem.current.SetSelectedGameObject(btnContinue.gameObject);
         }
 
         private void OnContinueClicked()

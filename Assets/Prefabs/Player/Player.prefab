@@ -559,6 +559,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3293183994769741356}
     m_Modifications:
+    - target: {fileID: 1325736471944658269, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
+      propertyPath: m_fontSize
+      value: 90.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1325736472635932071, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
+      propertyPath: m_fontSize
+      value: 90.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1325736473064766080, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 3293183994769741346}
     - target: {fileID: 1325736473064766138, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
       propertyPath: m_Name
       value: PauseMenu
@@ -646,6 +658,18 @@ PrefabInstance:
     - target: {fileID: 1325736473064766142, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1325736473093027775, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
+      propertyPath: m_fontSize
+      value: 180.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1325736473532956557, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
+      propertyPath: m_fontSize
+      value: 90.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1325736473704366712, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
+      propertyPath: m_fontSize
+      value: 90.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9047324aa92f0e49bb1862f97f99e06, type: 3}
