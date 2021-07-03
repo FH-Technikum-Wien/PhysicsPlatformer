@@ -7,6 +7,9 @@ namespace Physics
     [RequireComponent(typeof(Rigidbody2D))]
     public class PhysicsBody2D : MonoBehaviour
     {
+        /// <summary>
+        /// The global gravity acceleration used by all dynamic bodies without custom gravity.
+        /// </summary>
         public static float GlobalGravityAcceleration = 9.81f;
 
         /// <summary>
@@ -14,6 +17,9 @@ namespace Physics
         /// </summary>
         public static Vector2 GlobalGravity = new Vector2(0.0f, GlobalGravityAcceleration);
 
+        /// <summary>
+        /// The type of the PhysicsBody2D.
+        /// </summary>
         public enum Type
         {
             Dynamic,
@@ -154,6 +160,9 @@ namespace Physics
         /// </summary>
         public Vector2 BaseVelocity { get; private set; }
 
+        /// <summary>
+        /// The collider of the PhysicsBody2D.
+        /// </summary>
         public Collider2D Collider2D => _collider2D;
 
         /// <summary>
@@ -202,6 +211,9 @@ namespace Physics
         private readonly float _defaultElementDensity =
             ElementDensity.GetMaterialDensity(ElementDensity.ElementType.Air);
 
+        /// <summary>
+        /// Required due to slow collisions that cause negative magnitude.
+        /// </summary>
         private const float COLLISION_MAGNITUDE_TOLERANCE = -0.1f;
 
         private void Awake()
@@ -215,6 +227,7 @@ namespace Physics
             if (freezeRotation)
                 _rb.freezeRotation = true;
 
+            // Depending on type, set attributes
             if (bodyType == Type.Kinematic)
             {
                 _rb.bodyType = RigidbodyType2D.Kinematic;
@@ -315,7 +328,6 @@ namespace Physics
         /// <summary>
         /// Checks if the body is currently colliding with any static or dynamic objects.
         /// </summary>
-        /// <param name="other"></param>
         private void OnCollisionStay2D(Collision2D other)
         {
             if (!other.collider.TryGetComponent(out PhysicsBody2D body) || body.bodyType == Type.Kinematic)
@@ -331,7 +343,6 @@ namespace Physics
         /// <summary>
         /// Moving into another element with a different density.
         /// </summary>
-        /// <param name="other"></param>
         private void OnTriggerEnter2D(Collider2D other)
         {
             // Change drag
@@ -345,7 +356,6 @@ namespace Physics
         /// <summary>
         /// Moving out of another element, back to the previous element.
         /// </summary>
-        /// <param name="other"></param>
         private void OnTriggerExit2D(Collider2D other)
         {
             // Revert drag
@@ -368,7 +378,7 @@ namespace Physics
         /// <summary>
         /// Applies a simple force, using <see cref="Rigidbody2D.AddForce(UnityEngine.Vector2)"/>.
         /// </summary>
-        /// <param name="force"></param>
+        /// <param name="force">The force to add</param>
         public void ApplyForce(Vector2 force)
         {
             _rb.AddForce(force);
@@ -377,6 +387,7 @@ namespace Physics
         /// <summary>
         /// Adds the given velocity to the internal rigidbody velocity.
         /// </summary>
+        /// <param name="velocity">The velocity to add</param>
         public void AddVelocity(Vector2 velocity)
         {
             _rb.velocity += velocity;
@@ -385,6 +396,7 @@ namespace Physics
         /// <summary>
         /// Sets the position of the physics body.
         /// </summary>
+        /// <param name="position">The new position of the body</param>
         public void SetPosition(Vector2 position)
         {
             _rb.MovePosition(position);
@@ -458,16 +470,18 @@ namespace Physics
             _isCollidingWithDynamic = false;
         }
 
-        public void SetConstraints(RigidbodyConstraints2D constraints)
-        {
-            _rb.constraints = constraints;
-        }
-
+        /// <summary>
+        /// Adds a constraint to the body (rigidbody2D constraint).
+        /// </summary>
+        /// <param name="constraint">The constraint to add</param>
         public void AddConstraint(RigidbodyConstraints2D constraint)
         {
             _rb.constraints |= constraint;
         }
 
+        /// <summary>
+        /// Resets collisions flags and velocities.
+        /// </summary>
         public void ResetBody()
         {
             ResetCollisionFlags();
@@ -504,7 +518,7 @@ namespace Physics
         /// </summary>
         private void ApplyQuickDrag()
         {
-            _rb.velocity = Vector2.Lerp(_rb.velocity, BaseVelocity, quickDrag);
+            _rb.velocity = Vector2.Lerp(_rb.velocity, BaseVelocity, quickDrag * Time.fixedDeltaTime);
         }
 
         /// <summary>

@@ -111,13 +111,19 @@ namespace Player
         private PhysicsBody2D _pb;
 
         /// <summary>
-        /// The current move direction, set by the input system callback, used in FixedUpdate
+        /// The current move direction, set by the input system callback, used in FixedUpdate.
         /// </summary>
         private Vector2 _moveDirection;
 
+        /// <summary>
+        /// The main camera.
+        /// </summary>
         private Camera _camera;
 
-        InputControlScheme _mouseControlScheme;
+        /// <summary>
+        /// The mouse and keyboard input scheme. Used for differentiation.
+        /// </summary>
+        private InputControlScheme _mouseControlScheme;
 
         private void Awake()
         {
@@ -128,6 +134,7 @@ namespace Player
             InputAction.Player.Move.performed += OnMove;
             // Required to stop player from moving, as performed will not always be called with Vector.zero
             InputAction.Player.Move.canceled += OnMoveCanceled;
+            
             InputAction.Player.Jump.performed += _ => Jump();
             InputAction.Player.Throw.performed += OnThrow;
             InputAction.Player.PickUp.performed += OnPickUp;
@@ -136,6 +143,7 @@ namespace Player
             InputAction.Player.GravityLeft.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Left);
             InputAction.Player.GravityRight.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Right);
             
+            // Separate input for MainMenu
             InputAction.PlayerMainMenu.GravityUp.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Up);
             InputAction.PlayerMainMenu.GravityDown.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Down);
             InputAction.PlayerMainMenu.GravityLeft.performed += _ => changeGravityAbility.SetGravity(GravityDirection.Left);
@@ -175,6 +183,9 @@ namespace Player
             InputAction.UI.Disable();
         }
 
+        /// <summary>
+        /// Read mouse and left stick input for aiming.
+        /// </summary>
         private void Update()
         {
             IsUsingMouse = playerInput.currentControlScheme.Equals(_mouseControlScheme.name);
@@ -205,6 +216,9 @@ namespace Player
             throwAbility.SetThrowDirection(lookDirection.normalized);
         }
 
+        /// <summary>
+        /// Handle movement and jump.
+        /// </summary>
         private void FixedUpdate()
         {
             // Apply dead zones to last received movement input
@@ -251,12 +265,18 @@ namespace Player
             }
         }
 
+        /// <summary>
+        /// Read movement from Input System.
+        /// </summary>
         private void OnMove(InputAction.CallbackContext ctx)
         {
             _pb.collisionDragEnabled = false;
             _moveDirection = ctx.ReadValue<Vector2>();
         }
 
+        /// <summary>
+        /// Reset movement.
+        /// </summary>
         private void OnMoveCanceled(InputAction.CallbackContext _)
         {
             _pb.collisionDragEnabled = true;
@@ -291,7 +311,10 @@ namespace Player
             }
         }
 
-        private void OnThrow(InputAction.CallbackContext obj)
+        /// <summary>
+        /// Throw the currently hold object.
+        /// </summary>
+        private void OnThrow(InputAction.CallbackContext _)
         {
             if (!throwAbility.IsHolding)
                 return;
@@ -319,14 +342,17 @@ namespace Player
         }
 
         /// <summary>
-        /// Re-enables player input and continues the game
+        /// <see cref="OnPauseMenuContinue"/>.
         /// </summary>
-        private void OnUnPause(InputAction.CallbackContext obj)
+        private void OnUnPause(InputAction.CallbackContext _)
         {
             OnPauseMenuContinue();
         }
 
-        private void OnPause(InputAction.CallbackContext obj)
+        /// <summary>
+        /// Pause game and show PauseMenu.
+        /// </summary>
+        private void OnPause(InputAction.CallbackContext _)
         {
             InputAction.UI.Enable();
             InputAction.Player.Disable();
@@ -334,6 +360,9 @@ namespace Player
             pauseMenu.SetVisibility(true);
         }
 
+        /// <summary>
+        /// Re-enables player input and continues the game
+        /// </summary>
         private void OnPauseMenuContinue()
         {
             InputAction.UI.Disable();

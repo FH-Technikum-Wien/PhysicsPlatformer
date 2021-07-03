@@ -48,6 +48,11 @@ namespace World
             }
         }
         
+        /// <summary>
+        /// Applies the given velocity and acceleration change to all objects currently moving with it.
+        /// </summary>
+        /// <param name="velocity">Current velocity of this object</param>
+        /// <param name="acceleration">Current acceleration of this object</param>
         public void ApplyAccelerationAndVelocity(Vector2 velocity, Vector2 acceleration)
         {
             _lastVelocity = velocity;

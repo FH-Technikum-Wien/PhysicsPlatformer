@@ -71,6 +71,9 @@ namespace Physics
             _origin = alternativeOrigin == Vector3.zero ? transform.localPosition : alternativeOrigin;
         }
 
+        /// <summary>
+        /// Set constraints.
+        /// </summary>
         private void Start()
         {
             if(freezeX)

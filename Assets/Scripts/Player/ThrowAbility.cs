@@ -13,6 +13,9 @@ namespace Player
         [SerializeField] [Tooltip("Used for rendering the prediction")]
         private LineRenderer lineRenderer;
 
+        /// <summary>
+        /// The number of steps for the prediction. Defines the length (one step == Time.fixedDeltaTime).
+        /// </summary>
         [SerializeField] private float predictionLength;
 
         /// <summary>
@@ -92,11 +95,6 @@ namespace Player
 
             // Enable collision after its outside the players collider.
             body.Collider2D.isTrigger = false;
-        }
-
-        public void SetThrowFactor(float throwFactor)
-        {
-            _throwFactor = throwFactor;
         }
 
         /// <summary>

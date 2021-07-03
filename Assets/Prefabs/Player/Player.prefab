@@ -131,7 +131,7 @@ MonoBehaviour:
   elementDensity: 1.225
   frontalArea: 1
   useQuickDrag: 0
-  quickDrag: 0.05
+  quickDrag: 0.2
   collisionDragEnabled: 1
   collisionDrag: 0.5
   collisionDragWithDynamicsEnabled: 1

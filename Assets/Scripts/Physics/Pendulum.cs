@@ -37,11 +37,24 @@ namespace Physics
         [SerializeField] [Tooltip("Component for moving objects with the pendulum")]
         private MovingWith movingWith;
 
+        /// <summary>
+        /// The underlying PhysicsBody2D.
+        /// </summary>
         private PhysicsBody2D _pb;
 
+        /// <summary>
+        /// The current difference to the origin/pivot.
+        /// </summary>
         private Vector2 _displacementVector;
+        
+        /// <summary>
+        /// The length of the pendulum.
+        /// </summary>
         private float _length;
 
+        /// <summary>
+        /// The current velocity of the pendulum. Used for the Euler-Cromer method.
+        /// </summary>
         private Vector2 _velocity;
 
         private void Awake()
@@ -56,8 +69,10 @@ namespace Physics
 
         private void FixedUpdate()
         {
+            // Render a line from the platform to the pivot to imitate a connection with it.
             VisualizeConnectionToPivot();
 
+            // Get displacement to pivot
             _displacementVector = pivot.position - transform.position;
             Vector2 tensionDirection = _displacementVector.normalized;
 
@@ -73,6 +88,7 @@ namespace Physics
             Vector2 tensionFromCentrifuge = perpendicularVelocity * perpendicularVelocity / _length * tensionDirection;
             
             // Apply force from centrifuge, weight and gravity to pendulum
+            // Euler-Cromer Method
             Vector2 acceleration = tensionFromCentrifuge + tensionFromWeight - PhysicsBody2D.GlobalGravity;
             _velocity += acceleration * Time.fixedDeltaTime;
             
@@ -86,11 +102,17 @@ namespace Physics
             movingWith.ApplyAccelerationAndVelocity(_velocity, acceleration);
         }
 
+        /// <summary>
+        /// Resets the pendulum by resetting its velocity
+        /// </summary>
         public void ResetPendulum()
         {
             _velocity = Vector2.zero;
         }
 
+        /// <summary>
+        /// Renders a line between platform and pivot.
+        /// </summary>
         private void VisualizeConnectionToPivot()
         {
             lineRenderer.positionCount = 0;
