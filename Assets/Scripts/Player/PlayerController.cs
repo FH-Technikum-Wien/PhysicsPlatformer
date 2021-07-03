@@ -177,11 +177,11 @@ namespace Player
 
         private void Update()
         {
+            IsUsingMouse = playerInput.currentControlScheme.Equals(_mouseControlScheme.name);
+            
             // Skip if no camera for mouse input
             if (_camera == null)
                 return;
-
-            IsUsingMouse = playerInput.currentControlScheme.Equals(_mouseControlScheme.name);
 
             Vector2 lookDirection;
             // Get mouse for aiming

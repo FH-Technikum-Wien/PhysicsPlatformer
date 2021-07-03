@@ -860,6 +860,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: GravityUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6591015369116697020, guid: 66d54a573e91eb44d9dcd3f46bb9347c, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591015369116697020, guid: 66d54a573e91eb44d9dcd3f46bb9347c, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66d54a573e91eb44d9dcd3f46bb9347c, type: 3}
 --- !u!224 &1003697433 stripped
@@ -1288,7 +1296,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &1233574633
 RectTransform:
