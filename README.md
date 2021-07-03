@@ -11,4 +11,4 @@ More a showcase for physically accurate calculations and behaviour than an actua
 | `W,Left Shoulder, Left Trigger, Left stick up` | Jump |
 | `D-Pad, Buttons (A, B, X, Y)` | Change Gravity |
 | `Right Shoulder` | Pick up / Drop |
-| `Left Shoulder` | Throw |
+| `Right Trigger` | Throw |
